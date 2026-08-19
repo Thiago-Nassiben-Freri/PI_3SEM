@@ -30,16 +30,15 @@ saúde de cada animal e manter suas informações organizadas e atualizadas.
 
 ### Estrutura Inicial (Provisório)
 ```
-meu-projeto/
+app/
  ├── src/
  │   ├── main/
  │   │   ├── java/
  │   │   │   └── com/
- │   │   │       └── exemplo/
- │   │   │           └── app/
- │   │   │               ├── MeuProjetoApplication.java 
+ │   │   │       └── exemple/
+ │   │   │           └── pi3sem/
  │   │   │               ├── backend/
- |   |   |               |   |
+ |   |   |               |   ├── Pi3semApplication.java
  │   │   │               │   ├── controller/ 
  │   │   │               │   ├── service/
  │   │   │               │   ├── repository/
@@ -68,3 +67,38 @@ meu-projeto/
 **application.properties** - Configs Spring Boot \
 **fxml/** - Telas JavaFX \
 ***
+
+### Passo a Passo
+
+#### 1. Clonar o repositório
+```
+git clone https://github.com/Gabriel-Verdin/PI_3SEM.git
+cd pi-3sem
+```
+
+#### 2. Verificar se o Maven está presente
+Se o projeto tem os arquivos mvnw e mvnw.cmd, você pode usar o wrapper sem precisar instalar Maven globalmente:
+```
+./mvnw clean install   # Linux/Mac
+mvnw.cmd clean install # Windows
+```
+Se não tiver wrapper, basta usar o Maven instalado:
+```
+mvn clean install
+```
+
+#### 3. Rodar o Backend (Spring Boot)
+```
+mvn spring-boot: run
+```
+ou
+```
+java -jar target/pi3sem-0.0.1-SNAPSHOT.jar
+```
+
+#### 4. Rodar o desktop (JavaFX) // (Pendente)
+Entre na pasta desktop/ e rode a classe Main.java pela sua IDE ou com:
+```
+mvn javafx:run
+```
+(se você configurar o plugin JavaFX no pom.xml).
