@@ -102,3 +102,6 @@ Entre na pasta desktop/ e rode a classe Main.java pela sua IDE ou com:
 mvn javafx:run
 ```
 (se você configurar o plugin JavaFX no pom.xml).
+
+#### 5. Localhost
+http://localhost:8080/hello
