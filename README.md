@@ -1,25 +1,19 @@
-# PetCare (Nome provisório)
+# PetVax
 Projeto Integrador (PI) para o 3º semestre de ADS da FATEC
 
 ### Qual problema o sistema resolve?
 
-O sistema tem como objetivo ajudar na prevenção e nos cuidados com a saúde de
-animais domésticos. Atualmente, muitas clínicas veterinárias e ONGs utilizam métodos
-pouco eficientes para registrar informações dos animais, como vacinas, doenças e
-histórico de saúde. O sistema busca facilitar o armazenamento e o acesso a essas
-informações, tornando o acompanhamento da saúde dos animais mais organizado e
-prático.
+O acompanhamento adequado da vacinação dos animais é uma atividade importante na rotina de atendimento veterinário. O uso de registros manuais ou planilhas pode dificultar o controle das datas de vacinação, dos históricos dos Pets e das próximas doses, aumentando a possibilidade de falhas de organização.
+O PetVax busca oferecer uma solução simples e prática para centralizar essas informações e auxiliar os médicos veterinários durante os atendimentos presenciais. Por meio do cadastro, agendamento e registro das vacinas, os profissionais poderão acompanhar a situação de cada Pet e receber notificações sobre vacinações programadas ou próximas do prazo, tornando o processo mais organizado e reduzindo a possibilidade de esquecimento.
 ***
 
 ### Para quem é o sistema? (público-alvo)
-Clínicas veterinárias, ONGs de resgate de animais de rua e instituições de caridade
-voltadas ao cuidado de animais domésticos.
+O sistema será utilizado exclusivamente pelos médicos veterinários responsáveis pela empresa, que também são os proprietários da empresa e realizam os atendimentos de forma presencial.
 ***
 
 ### Descrição geral do sistema
-O sistema armazenará o histórico de saúde dos animais domésticos, incluindo a carteira
-de vacinação, doenças, tratamentos e consultas. Assim, será mais fácil acompanhar a
-saúde de cada animal e manter suas informações organizadas e atualizadas.
+O sistema em desenvolvimento para a Vet Home, denominado PetVax, visa facilitar o processo de agendamento, acompanhamento e notificação de vacinação de animais de estimação por meio de um programa desktop desenvolvido em Java.
+O PetVax permitirá aos médicos veterinários cadastrar e consultar tutores, seus respectivos Pets e as vacinas disponíveis, além de realizar o agendamento das aplicações e registrar o histórico de vacinação. O tutor não terá acesso direto ao sistema; suas informações serão registradas e administradas pelos veterinários durante ou a partir dos atendimentos presenciais.
 ***
 
 ### Técnologias utilizadas
