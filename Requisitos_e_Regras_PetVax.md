@@ -41,7 +41,7 @@ Este documento reúne a especificação consolidada de **Requisitos Funcionais (
 
 * **RN01 - Exclusividade de Acesso Interno (*Won't Have / Must Have*):** O acesso ao software é estritamente restrito aos usuários cadastrados da empresa (médicos veterinários e administradores). Atores externos, tais como tutores ou fornecedores, **não** possuem perfil nem acesso direto ao sistema.
 * **RN02 - Ausência de Controle de Estoque (*Won't Have*):** O sistema **não** realizará gestão, baixa automática ou controle de estoque físico das vacinas.
-* **RN03 - Canal Principal de Notificação (*Must Have*):** O meio primário padronizado para o envio de avisos e lembretes de vacinação aos clientes/veterinários é o **WhatsApp**.
+* **RN03 - Canal Principal de Notificação (*Must Have*):** O meio primário padronizado para o envio de avisos e lembretes de vacinação aos veterinários é o **WhatsApp**.
 * **RN04 - Escopo Operacional Focado:** O software destina-se exclusivamente ao acompanhamento imunológico e médico presencial do animal, estando fora do escopo funcionalidades financeiras, vendas, banho e tosa, ou hospedagem.
 
 ---
