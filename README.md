@@ -64,38 +64,78 @@ app/
 
 ### Passo a Passo
 
+Pré-requisitos:
+- **JDK 21** (precisa do `javac` 21, não só o JRE)
+- **MySQL** rodando em `localhost:3306`
+- Git
+
+Confira as versões:
+```bash
+java -version
+javac -version
+```
+Os dois devem mostrar 21. Se o `javac` for 8, instale o JDK 21:
+```bash
+sudo apt install openjdk-21-jdk
+```
+
 #### 1. Clonar o repositório
-```
+```bash
 git clone https://github.com/Gabriel-Verdin/PI_3SEM.git
-cd pi-3sem
+cd PI_3SEM
 ```
 
-#### 2. Verificar se o Maven está presente
-Se o projeto tem os arquivos mvnw e mvnw.cmd, você pode usar o wrapper sem precisar instalar Maven globalmente:
+#### 2. Criar o banco e o usuário no MySQL
+```bash
+sudo mysql
 ```
-./mvnw clean install   # Linux/Mac
-mvnw.cmd clean install # Windows
+```sql
+CREATE DATABASE IF NOT EXISTS petvax
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+CREATE USER 'petvax'@'localhost' IDENTIFIED BY 'petvax123';
+GRANT ALL PRIVILEGES ON petvax.* TO 'petvax'@'localhost';
+FLUSH PRIVILEGES;
 ```
-Se não tiver wrapper, basta usar o Maven instalado:
+Ajuste `app/src/main/resources/application.properties` com o **mesmo** usuário e senha:
+```properties
+spring.datasource.username=petvax
+spring.datasource.password=petvax123
 ```
-mvn clean install
+Não commite senha de produção. Se usar `${DB_PASSWORD}`, defina a variável **antes** de subir o servidor:
+```bash
+export DB_PASSWORD='petvax123'
 ```
 
-#### 3. Rodar o Backend (Spring Boot)
+#### 3. Subir o backend (Spring Boot)
+O `pom.xml` está em `app/`. Use o Maven Wrapper (não precisa instalar Maven):
+```bash
+cd app
+./mvnw spring-boot:run    # Linux/Mac
+mvnw.cmd spring-boot:run  # Windows
 ```
-mvn spring-boot: run
+O servidor sobe em **http://localhost:8080**. Deixe esse terminal aberto.
+
+#### 4. Testar a API
+No navegador:
 ```
-ou
+http://localhost:8080/especies
 ```
-java -jar target/pi3sem-0.0.1-SNAPSHOT.jar
+Lista vazia (`[]`) é o esperado se ainda não houver cadastro.
+
+Criar uma espécie (outro terminal):
+```bash
+curl -X POST http://localhost:8080/especies \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Canina"}'
+```
+Atualize a página; deve aparecer o JSON com `idEspecie` e `nome`.
+
+#### 5. Desktop (JavaFX)
+Ainda pendente. Quando existir, será um **segundo processo** (não misturar com o Spring):
+```bash
+cd app
+./mvnw javafx:run
 ```
 
-#### 4. Rodar o desktop (JavaFX) // (Pendente)
-Entre na pasta desktop/ e rode a classe Main.java pela sua IDE ou com:
-```
-mvn javafx:run
-```
-(se você configurar o plugin JavaFX no pom.xml).
-
-#### 5. Localhost
-http://localhost:8080/hello
