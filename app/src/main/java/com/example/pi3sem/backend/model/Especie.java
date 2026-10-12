@@ -11,14 +11,16 @@ import jakarta.persistence.Table;
 @Table(name = "especie")
 public class Especie {
 
+    // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_especie")
     private Integer idEspecie;
 
-    @Column(name = "nome", nullable = false, length = 80)
+    @Column(name = "nome", nullable = false, length = 30)
     private String nome;
 
+    // Getters e Setters
     public Integer getIdEspecie() {
         return idEspecie;
     }
