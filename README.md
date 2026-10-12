@@ -19,7 +19,7 @@ O PetVax permitirá aos médicos veterinários cadastrar e consultar tutores, se
 ### Técnologias utilizadas
 **Java + Springboot + JavaFX:** Utilizados no desenvolvimento do sistema, implementação das regras de nogócio, criação da API e interface gráfica.
 
-**MySQL:** Utilizado para o armazenamento e gerenciamento dos dados dos animais, incluindo histórico de saúde, vacinação, doenças, tratamentos e consultas.
+**PostgreSQL:** Utilizado para o armazenamento e gerenciamento dos dados dos animais, incluindo histórico de saúde, vacinação, doenças, tratamentos e consultas.
 ***
 
 ### Estrutura Inicial (Provisório)
@@ -66,7 +66,7 @@ app/
 
 Pré-requisitos:
 - **JDK 21** (precisa do `javac` 21, não só o JRE)
-- **MySQL** rodando em `localhost:3306`
+- **PostgreSQL** Banco de dados hospedado
 - Git
 
 Confira as versões:
@@ -85,57 +85,12 @@ git clone https://github.com/Gabriel-Verdin/PI_3SEM.git
 cd PI_3SEM
 ```
 
-#### 2. Criar o banco e o usuário no MySQL
-```bash
-sudo mysql
-```
-```sql
-CREATE DATABASE IF NOT EXISTS petvax
-  CHARACTER SET utf8mb4
-  COLLATE utf8mb4_unicode_ci;
+#### 2. Banco e Spring já hospedados
+https://petvax.onrender.com
 
-CREATE USER 'petvax'@'localhost' IDENTIFIED BY 'petvax123';
-GRANT ALL PRIVILEGES ON petvax.* TO 'petvax'@'localhost';
-FLUSH PRIVILEGES;
-```
-Ajuste `app/src/main/resources/application.properties` com o **mesmo** usuário e senha:
-```properties
-spring.datasource.username=petvax
-spring.datasource.password=petvax123
-```
-Não commite senha de produção. Se usar `${DB_PASSWORD}`, defina a variável **antes** de subir o servidor:
-```bash
-export DB_PASSWORD='petvax123'
-```
-
-#### 3. Subir o backend (Spring Boot)
-O `pom.xml` está em `app/`. Use o Maven Wrapper (não precisa instalar Maven):
-```bash
-cd app
-./mvnw spring-boot:run    # Linux/Mac
-mvnw.cmd spring-boot:run  # Windows
-```
-O servidor sobe em **http://localhost:8080**. Deixe esse terminal aberto.
-
-#### 4. Testar a API
-No navegador:
-```
-http://localhost:8080/especies
-```
-Lista vazia (`[]`) é o esperado se ainda não houver cadastro.
-
-Criar uma espécie (outro terminal):
-```bash
-curl -X POST http://localhost:8080/especies \
-  -H "Content-Type: application/json" \
-  -d '{"nome":"Canina"}'
-```
-Atualize a página; deve aparecer o JSON com `idEspecie` e `nome`.
-
-#### 5. Desktop (JavaFX)
+#### 3. Desktop (JavaFX)
 Ainda pendente. Quando existir, será um **segundo processo** (não misturar com o Spring):
 ```bash
 cd app
 ./mvnw javafx:run
 ```
-
