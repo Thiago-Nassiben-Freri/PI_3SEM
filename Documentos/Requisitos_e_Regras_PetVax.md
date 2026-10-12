@@ -30,7 +30,7 @@ Este documento reúne a especificação consolidada de **Requisitos Funcionais (
 |---|---|---|
 | **RNF01** | **Conectividade com a Internet:** O sistema deve requerer e manter conexão ativa com a internet para viabilizar as comunicações externas e o disparo de notificações (ex: integração com WhatsApp). | *Must Have / Infraestrutura* |
 | **RNF02** | **Stack Tecnológica:** A aplicação desktop deve ser desenvolvida em **Java** com **JavaFX** para a interface gráfica e **Spring Boot** para a estrutura de backend/API REST. | *Arquitetura* |
-| **RNF03** | **Persistência em Banco de Dados:** O sistema deve utilizar o SGBD **MySQL** para o armazenamento e gerenciamento relacional dos dados cadastrais e históricos. | *Armazenamento* |
+| **RNF03** | **Persistência em Banco de Dados:** O sistema deve utilizar o SGBD **PostgreSQL** para o armazenamento e gerenciamento relacional dos dados cadastrais e históricos. | *Armazenamento* |
 | **RNF04** | **Usabilidade da Interface:** A interface gráfica (desenvolvida via FXML) deve ser intuitiva e otimizada para o fluxo de atendimento clínico presencial do veterinário. | *Usabilidade* |
 
 ---
@@ -52,5 +52,5 @@ Este documento reúne a especificação consolidada de **Requisitos Funcionais (
 
 * **RES01 - Dependência de Acesso à Internet:** A execução completa dos serviços de notificação exige conectividade constante com a internet, impedindo o funcionamento 100% offline da integração via WhatsApp.
 * **RES02 - Modelo Inicial Desktop:** A entrega do sistema deve focar na aplicação desktop em Java/JavaFX, postergando soluções mobile ou web para fases futuras do projeto.
-* **RES03 - Limitação Financeira e Tecnologias Gratuitas:** O desenvolvimento do software deve utilizar exclusivamente ferramentas, bibliotecas e frameworks de licença gratuita e/ou open-source (Java, Spring Boot, MySQL, Maven).
+* **RES03 - Limitação Financeira e Tecnologias Gratuitas:** O desenvolvimento do software deve utilizar exclusivamente ferramentas, bibliotecas e frameworks de licença gratuita e/ou open-source (Java, Spring Boot, PostgreSQL, Maven).
 * **RES04 - Prazo Acadêmico:** O escopo do software deve ser concluído e entregue dentro das datas do cronograma acadêmico do 3º semestre do curso de ADS (FATEC).
