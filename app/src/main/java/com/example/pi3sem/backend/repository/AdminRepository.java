@@ -1,5 +1,8 @@
 package com.example.pi3sem.backend.repository;
 
-public class AdminRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.pi3sem.backend.model.Admin;
+
+public interface AdminRepository extends JpaRepository<Admin, Integer> {
+
 }
