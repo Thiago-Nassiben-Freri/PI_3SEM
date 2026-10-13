@@ -1,5 +1,8 @@
 package com.example.pi3sem.backend.repository;
 
-public class RacaRepository {
-    
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.pi3sem.backend.model.Raca;
+
+public interface RacaRepository extends JpaRepository<Raca, Integer> {
+
 }
