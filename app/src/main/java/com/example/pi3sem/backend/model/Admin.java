@@ -1,6 +1,7 @@
 package com.example.pi3sem.backend.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -10,6 +11,7 @@ import jakarta.persistence.Table;
 public class Admin {
 
     // Atributos
+    @Id
     @ManyToOne 
     @JoinColumn (name = "fk_usuario_id_usuario", nullable = false)
     private Usuario usuario;
