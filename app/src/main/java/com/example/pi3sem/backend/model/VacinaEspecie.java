@@ -1,6 +1,9 @@
 package com.example.pi3sem.backend.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -10,6 +13,10 @@ import jakarta.persistence.Table;
 public class VacinaEspecie {
 
     // Atributos
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @ManyToOne
     @JoinColumn(name = "fk_vacina_id_especie", nullable = false)
     private Vacina vacina;
@@ -19,6 +26,14 @@ public class VacinaEspecie {
     private Especie especie;
 
     // Getters e Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Vacina getVacina() {
         return vacina;
     }
