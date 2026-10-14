@@ -2,6 +2,7 @@ package com.example.pi3sem.backend.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Tutor;
 import com.example.pi3sem.backend.repository.TutorRepository;
 
@@ -16,6 +17,11 @@ public class TutorService {
 
     public List<Tutor> listar() {
         return repository.findAll();
+    }
+
+    public Tutor buscarPorId(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Tutor", id));
     }
 
     public Tutor salvar(Tutor tutor) {
