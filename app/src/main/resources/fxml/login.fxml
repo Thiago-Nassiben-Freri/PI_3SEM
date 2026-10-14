@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      alignment="CENTER"
+      spacing="15"
+      prefWidth="500"
+      prefHeight="600">
+
+    <Label text="PetVax" style="-fx-font-size: 28px; -fx-font-weight: bold;" />
+
+    <TextField promptText="E-mail" />
+    <PasswordField promptText="Senha" />
+    <CheckBox text="Manter conectado" />
+    <Button text="Entrar" />
+</VBox>
