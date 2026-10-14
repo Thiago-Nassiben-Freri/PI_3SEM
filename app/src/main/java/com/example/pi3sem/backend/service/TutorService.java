@@ -40,7 +40,17 @@ public class TutorService {
         if (tutor.getNumero() == null || tutor.getNumero().isBlank()) {
             throw new IllegalArgumentException("O número do endereço do tutor é obrigatório");
         }
+        validarCpfUnico(tutor.getCpf(), null);
         return repository.save(tutor);
+    }
+
+    // idAtual: id do próprio tutor em uma atualização (null no cadastro)
+    private void validarCpfUnico(String cpf, Integer idAtual) {
+        repository.findByCpf(cpf)
+                .filter(existente -> !existente.getIdTutor().equals(idAtual))
+                .ifPresent(existente -> {
+                    throw new IllegalArgumentException("Já existe um tutor cadastrado com este CPF");
+                });
     }
 
 }
