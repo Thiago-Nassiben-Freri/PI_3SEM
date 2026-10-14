@@ -1,6 +1,7 @@
 package com.example.pi3sem.backend.model;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,8 +23,8 @@ public class AplicacaoVacina {
     private Integer idAplicacaoVacina;
 
     @Column (name = "data_aplicacao", nullable = false)
-    private String dataAplicacao;
-
+    private LocalDateTime dataAplicacao;
+    
     @Column (name = "numero_dose", nullable = true)
     private Integer numeroDose;
 
@@ -61,11 +62,11 @@ public class AplicacaoVacina {
         this.idAplicacaoVacina = idAplicacaoVacina;
     }
 
-    public String getDataAplicacao() {
+    public LocalDateTime getDataAplicacao() {
         return dataAplicacao;
     }
 
-    public void setDataAplicacao(String dataAplicacao) {
+    public void setDataAplicacao(LocalDateTime dataAplicacao) {
         this.dataAplicacao = dataAplicacao;
     }
 

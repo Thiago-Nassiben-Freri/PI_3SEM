@@ -14,7 +14,6 @@ public class Veterinario {
 
     // Atributos
     @Id
-    @Column(name = "fk_usuario_id_usuario")
     private Integer id;
 
     @Column (name = "crmv", unique = true, nullable = false)
