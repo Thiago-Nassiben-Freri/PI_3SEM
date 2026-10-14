@@ -11,9 +11,11 @@ import com.example.pi3sem.backend.repository.RacaRepository;
 public class RacaService {
 
     private final RacaRepository repository;
+    private final EspecieService especieService;
 
-    public RacaService(RacaRepository repository) {
+    public RacaService(RacaRepository repository, EspecieService especieService) {
         this.repository = repository;
+        this.especieService = especieService;
     }
 
     public List<Raca> listar() {
@@ -30,6 +32,7 @@ public class RacaService {
         if (raca.getEspecie() == null || raca.getEspecie().getIdEspecie() == null) {
             throw new IllegalArgumentException("A espécie da raça é obrigatória");
         }
+        raca.setEspecie(especieService.buscarPorId(raca.getEspecie().getIdEspecie()));
         return repository.save(raca);
     }
 
