@@ -12,16 +12,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pi3sem.backend.model.Especie;
+import com.example.pi3sem.backend.model.Raca;
 import com.example.pi3sem.backend.service.EspecieService;
+import com.example.pi3sem.backend.service.RacaService;
 
 @RestController
 @RequestMapping("/especies")
 public class EspecieController {
 
     private final EspecieService service;
+    private final RacaService racaService;
 
-    public EspecieController(EspecieService service) {
+    public EspecieController(EspecieService service, RacaService racaService) {
         this.service = service;
+        this.racaService = racaService;
     }
 
     @GetMapping
@@ -49,6 +53,11 @@ public class EspecieController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Integer id) {
         service.excluir(id);
+    }
+
+    @GetMapping("/{id}/racas")
+    public List<Raca> listarRacas(@PathVariable Integer id) {
+        return racaService.listarPorEspecie(id);
     }
 
 }

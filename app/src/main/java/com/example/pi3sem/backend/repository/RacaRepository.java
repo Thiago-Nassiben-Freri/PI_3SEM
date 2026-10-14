@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Repository para a entidade Raca.
  * RacaRepository
- * List<Raca> findByNomeContainingIgnoreCase(Integer idEspecie): Método para buscar raças por ID da espécie.
+ * List<Raca> findByEspecie_IdEspecie(Integer idEspecie): Método para buscar raças por ID da espécie.
  */
 
 public interface RacaRepository extends JpaRepository<Raca, Integer> {
-    List<Raca> findByNomeContainingIgnoreCase(Integer idEspecie);
+    List<Raca> findByEspecie_IdEspecie(Integer idEspecie);
 }

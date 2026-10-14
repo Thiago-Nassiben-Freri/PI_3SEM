@@ -23,6 +23,11 @@ public class RacaService {
         return repository.findAll();
     }
 
+    public List<Raca> listarPorEspecie(Integer idEspecie) {
+        especieService.buscarPorId(idEspecie);
+        return repository.findByEspecie_IdEspecie(idEspecie);
+    }
+
     public Raca buscarPorId(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Raça", id));
