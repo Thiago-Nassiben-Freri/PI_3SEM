@@ -1,5 +1,6 @@
 package com.example.pi3sem.backend.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,22 +8,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "vacina_especie")
+@Table(name = "vacina_especie", uniqueConstraints = {@UniqueConstraint(columnNames = {"fk_vacina_id", "fk_especie_id"})})
 public class VacinaEspecie {
 
     // Atributos
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_vacina_id_especie", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_vacina_id", nullable = false)
     private Vacina vacina;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_especie_id_especie", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "fk_especie_id", nullable = false)
     private Especie especie;
 
     // Getters e Setters
