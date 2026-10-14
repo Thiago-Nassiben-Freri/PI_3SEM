@@ -11,5 +11,5 @@ import java.util.List;
  */
 
 public interface TelefoneRepository extends JpaRepository<Telefone, Integer> {
-    List<Telefone> findByTutor_Id(Integer idTutor);
+    List<Telefone> findByTutor_IdTutor(Integer idTutor);
 }
