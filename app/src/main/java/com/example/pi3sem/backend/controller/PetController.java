@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pi3sem.backend.model.Pet;
@@ -25,8 +26,10 @@ public class PetController {
     }
 
     @GetMapping
-    public List<Pet> listar() {
-        return service.listar();
+    public List<Pet> listar(@RequestParam(required = false) String nome,
+                            @RequestParam(required = false) Integer especieId,
+                            @RequestParam(required = false) Integer tutorId) {
+        return service.filtrar(nome, especieId, tutorId);
     }
 
     @GetMapping("/{id}")
