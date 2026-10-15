@@ -60,4 +60,10 @@ public class TutorController {
     public List<Telefone> listarTelefones(@PathVariable Integer id) {
         return telefoneService.listarPorTutor(id);
     }
+
+    @PostMapping("/{id}/telefones")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Telefone adicionarTelefone(@PathVariable Integer id, @RequestBody Telefone telefone) {
+        return telefoneService.adicionar(id, telefone);
+    }
 }
