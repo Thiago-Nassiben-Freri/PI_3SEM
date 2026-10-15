@@ -38,6 +38,19 @@ public class PetService {
         return repository.save(pet);
     }
 
+    public Pet atualizar(Integer id, Pet dados) {
+        Pet pet = buscarPorId(id);
+        validar(dados);
+        pet.setNome(dados.getNome());
+        pet.setSexo(Character.toUpperCase(dados.getSexo()));
+        pet.setDataNascimento(dados.getDataNascimento());
+        pet.setPeso(dados.getPeso());
+        pet.setObservacoes(dados.getObservacoes());
+        pet.setTutor(tutorService.buscarPorId(dados.getTutor().getIdTutor()));
+        pet.setRaca(racaService.buscarPorId(dados.getRaca().getIdRaca()));
+        return repository.save(pet);
+    }
+
     private void validar(Pet pet) {
         if (pet == null) {
             throw new IllegalArgumentException("O pet não pode ser nulo");
