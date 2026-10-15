@@ -66,4 +66,10 @@ public class TutorController {
     public Telefone adicionarTelefone(@PathVariable Integer id, @RequestBody Telefone telefone) {
         return telefoneService.adicionar(id, telefone);
     }
+
+    @DeleteMapping("/{id}/telefones/{telefoneId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void excluirTelefone(@PathVariable Integer id, @PathVariable Integer telefoneId) {
+        telefoneService.excluir(id, telefoneId);
+    }
 }

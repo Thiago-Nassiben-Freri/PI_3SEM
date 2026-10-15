@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Telefone;
 import com.example.pi3sem.backend.model.Tutor;
 import com.example.pi3sem.backend.repository.TelefoneRepository;
@@ -55,6 +56,15 @@ public class TelefoneService {
         telefone.setIdTelefone(null);
         telefone.setTutor(tutor);
         return salvar(telefone);
+    }
+
+    // Só remove se o telefone pertencer ao tutor informado na URL
+    public void excluir(Integer idTutor, Integer idTelefone) {
+        Telefone telefone = repository.findById(idTelefone)
+                .filter(t -> t.getTutor().getIdTutor().equals(idTutor))
+                .orElseThrow(() -> new RecursoNaoEncontradoException(
+                        "Telefone com id " + idTelefone + " não encontrado para o tutor " + idTutor));
+        repository.delete(telefone);
     }
 
 }
