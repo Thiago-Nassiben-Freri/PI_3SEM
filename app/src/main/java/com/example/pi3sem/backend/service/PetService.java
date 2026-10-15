@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Pet;
 import com.example.pi3sem.backend.repository.PetRepository;
 
@@ -22,6 +23,11 @@ public class PetService {
 
     public List<Pet> listar() {
         return repository.findAll();
+    }
+
+    public Pet buscarPorId(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Pet", id));
     }
 
     public Pet salvar(Pet pet) {
