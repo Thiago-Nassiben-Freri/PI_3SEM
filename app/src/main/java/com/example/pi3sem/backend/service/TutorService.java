@@ -25,6 +25,24 @@ public class TutorService {
     }
 
     public Tutor salvar(Tutor tutor) {
+        validar(tutor);
+        validarCpfUnico(tutor.getCpf(), null);
+        return repository.save(tutor);
+    }
+
+    public Tutor atualizar(Integer id, Tutor dados) {
+        Tutor tutor = buscarPorId(id);
+        validar(dados);
+        validarCpfUnico(dados.getCpf(), id);
+        tutor.setCpf(dados.getCpf());
+        tutor.setNome(dados.getNome());
+        tutor.setEmail(dados.getEmail());
+        tutor.setCep(dados.getCep());
+        tutor.setNumero(dados.getNumero());
+        return repository.save(tutor);
+    }
+
+    private void validar(Tutor tutor) {
         if (tutor.getCpf() == null || tutor.getCpf().isBlank()) {
             throw new IllegalArgumentException("O CPF do tutor é obrigatório");
         }
@@ -40,8 +58,6 @@ public class TutorService {
         if (tutor.getNumero() == null || tutor.getNumero().isBlank()) {
             throw new IllegalArgumentException("O número do endereço do tutor é obrigatório");
         }
-        validarCpfUnico(tutor.getCpf(), null);
-        return repository.save(tutor);
     }
 
     // idAtual: id do próprio tutor em uma atualização (null no cadastro)
