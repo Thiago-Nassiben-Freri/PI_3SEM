@@ -32,6 +32,11 @@ public class PetService {
         return repository.filtrar(nome == null ? "" : nome.trim(), especieId, tutorId);
     }
 
+    public List<Pet> listarPorTutor(Integer idTutor) {
+        tutorService.buscarPorId(idTutor);
+        return repository.findByTutor_IdTutor(idTutor);
+    }
+
     public Pet buscarPorId(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Pet", id));
