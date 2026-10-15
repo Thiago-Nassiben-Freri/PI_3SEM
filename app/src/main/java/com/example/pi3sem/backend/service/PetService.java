@@ -51,6 +51,11 @@ public class PetService {
         return repository.save(pet);
     }
 
+    public void excluir(Integer id) {
+        Pet pet = buscarPorId(id);
+        repository.delete(pet);
+    }
+
     private void validar(Pet pet) {
         if (pet == null) {
             throw new IllegalArgumentException("O pet não pode ser nulo");
