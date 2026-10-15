@@ -19,8 +19,11 @@ public class TutorService {
         this.telefoneRepository = telefoneRepository;
     }
 
-    public List<Tutor> listar() {
-        return repository.findAll();
+    public List<Tutor> listar(String busca) {
+        if (busca == null || busca.isBlank()) {
+            return repository.findAll();
+        }
+        return repository.buscar(busca.trim());
     }
 
     public Tutor buscarPorId(Integer id) {
