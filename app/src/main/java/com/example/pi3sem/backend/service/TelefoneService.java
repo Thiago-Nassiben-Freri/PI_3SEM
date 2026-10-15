@@ -11,13 +11,20 @@ import com.example.pi3sem.backend.repository.TelefoneRepository;
 public class TelefoneService {
 
     private final TelefoneRepository repository;
+    private final TutorService tutorService;
 
-    public TelefoneService(TelefoneRepository repository) {
+    public TelefoneService(TelefoneRepository repository, TutorService tutorService) {
         this.repository = repository;
+        this.tutorService = tutorService;
     }
 
     public List<Telefone> listar() {
         return repository.findAll();
+    }
+
+    public List<Telefone> listarPorTutor(Integer idTutor) {
+        tutorService.buscarPorId(idTutor);
+        return repository.findByTutor_IdTutor(idTutor);
     }
 
     public Telefone salvar(Telefone telefone) {

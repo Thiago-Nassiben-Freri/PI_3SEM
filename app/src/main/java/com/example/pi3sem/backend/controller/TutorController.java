@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.pi3sem.backend.model.Telefone;
 import com.example.pi3sem.backend.model.Tutor;
+import com.example.pi3sem.backend.service.TelefoneService;
 import com.example.pi3sem.backend.service.TutorService;
 
 @RestController
@@ -20,9 +22,11 @@ import com.example.pi3sem.backend.service.TutorService;
 public class TutorController {
 
     private final TutorService service;
+    private final TelefoneService telefoneService;
 
-    public TutorController(TutorService service) {
+    public TutorController(TutorService service, TelefoneService telefoneService) {
         this.service = service;
+        this.telefoneService = telefoneService;
     }
 
     @GetMapping
@@ -50,5 +54,10 @@ public class TutorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Integer id) {
         service.excluir(id);
+    }
+
+    @GetMapping("/{id}/telefones")
+    public List<Telefone> listarTelefones(@PathVariable Integer id) {
+        return telefoneService.listarPorTutor(id);
     }
 }
