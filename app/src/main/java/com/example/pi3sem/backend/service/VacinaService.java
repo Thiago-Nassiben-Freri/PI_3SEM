@@ -34,7 +34,10 @@ public class VacinaService {
             throw new IllegalArgumentException("A dosagem da vacina é obrigatória");
         }
         if (vacina.getPeriodicidadeDias() == null) {
-            throw new IllegalArgumentException("A periodicidade da vacina á obrigatória");
+            throw new IllegalArgumentException("A periodicidade da vacina é obrigatória");
+        }
+        if (vacina.getPeriodicidadeDias() <= 0) {
+            throw new IllegalArgumentException("A periodicidade da vacina deve ser maior que zero");
         }
         return repository.save(vacina);
     }

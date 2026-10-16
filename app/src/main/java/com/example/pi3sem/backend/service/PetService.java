@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Pet;
 import com.example.pi3sem.backend.repository.PetRepository;
 
@@ -11,23 +12,70 @@ import com.example.pi3sem.backend.repository.PetRepository;
 public class PetService {
 
     private final PetRepository repository;
+    private final TutorService tutorService;
+    private final RacaService racaService;
 
-    public PetService(PetRepository repository) {
+    public PetService(PetRepository repository, TutorService tutorService, RacaService racaService) {
         this.repository = repository;
+        this.tutorService = tutorService;
+        this.racaService = racaService;
     }
 
     public List<Pet> listar() {
         return repository.findAll();
     }
 
+    public List<Pet> filtrar(String nome, Integer especieId, Integer tutorId) {
+        if (nome == null && especieId == null && tutorId == null) {
+            return listar();
+        }
+        return repository.filtrar(nome == null ? "" : nome.trim(), especieId, tutorId);
+    }
+
+    public List<Pet> listarPorTutor(Integer idTutor) {
+        tutorService.buscarPorId(idTutor);
+        return repository.findByTutor_IdTutor(idTutor);
+    }
+
+    public Pet buscarPorId(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Pet", id));
+    }
+
     public Pet salvar(Pet pet) {
+        validar(pet);
+        pet.setSexo(Character.toUpperCase(pet.getSexo()));
+        pet.setTutor(tutorService.buscarPorId(pet.getTutor().getIdTutor()));
+        pet.setRaca(racaService.buscarPorId(pet.getRaca().getIdRaca()));
+        return repository.save(pet);
+    }
+
+    public Pet atualizar(Integer id, Pet dados) {
+        Pet pet = buscarPorId(id);
+        validar(dados);
+        pet.setNome(dados.getNome());
+        pet.setSexo(Character.toUpperCase(dados.getSexo()));
+        pet.setDataNascimento(dados.getDataNascimento());
+        pet.setPeso(dados.getPeso());
+        pet.setObservacoes(dados.getObservacoes());
+        pet.setTutor(tutorService.buscarPorId(dados.getTutor().getIdTutor()));
+        pet.setRaca(racaService.buscarPorId(dados.getRaca().getIdRaca()));
+        return repository.save(pet);
+    }
+
+    public void excluir(Integer id) {
+        Pet pet = buscarPorId(id);
+        repository.delete(pet);
+    }
+
+    private void validar(Pet pet) {
         if (pet == null) {
             throw new IllegalArgumentException("O pet não pode ser nulo");
         }
         if (pet.getNome() == null || pet.getNome().isBlank()) {
             throw new IllegalArgumentException("O nome do pet é obrigatório");
         }
-        if (pet.getSexo() == null || pet.getSexo().toString().toUpperCase() != "M" && pet.getSexo().toString().toUpperCase() != "F") {
+        if (pet.getSexo() == null || (Character.toUpperCase(pet.getSexo()) != 'M' && Character.toUpperCase(pet.getSexo()) != 'F')) {
             throw new IllegalArgumentException("O sexo do pet é obrigatório e deve ser 'M' ou 'F'");
         }
         if (pet.getDataNascimento() == null) {
@@ -42,7 +90,6 @@ public class PetService {
         if (pet.getRaca() == null || pet.getRaca().getIdRaca() == null) {
             throw new IllegalArgumentException("A raça do pet é obrigatória");
         }
-        return repository.save(pet);
     }
 
 }   

@@ -2,23 +2,63 @@ package com.example.pi3sem.backend.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Tutor;
+import com.example.pi3sem.backend.repository.TelefoneRepository;
 import com.example.pi3sem.backend.repository.TutorRepository;
 
 @Service
 public class TutorService {
 
     private final TutorRepository repository;
+    private final TelefoneRepository telefoneRepository;
 
-    public TutorService(TutorRepository repository) {
+    public TutorService(TutorRepository repository, TelefoneRepository telefoneRepository) {
         this.repository = repository;
+        this.telefoneRepository = telefoneRepository;
     }
 
-    public List<Tutor> listar() {
-        return repository.findAll();
+    public List<Tutor> listar(String busca) {
+        if (busca == null || busca.isBlank()) {
+            return repository.findAll();
+        }
+        return repository.buscar(busca.trim());
+    }
+
+    public Tutor buscarPorId(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Tutor", id));
     }
 
     public Tutor salvar(Tutor tutor) {
+        validar(tutor);
+        validarCpfUnico(tutor.getCpf(), null);
+        return repository.save(tutor);
+    }
+
+    public Tutor atualizar(Integer id, Tutor dados) {
+        Tutor tutor = buscarPorId(id);
+        validar(dados);
+        validarCpfUnico(dados.getCpf(), id);
+        tutor.setCpf(dados.getCpf());
+        tutor.setNome(dados.getNome());
+        tutor.setEmail(dados.getEmail());
+        tutor.setCep(dados.getCep());
+        tutor.setNumero(dados.getNumero());
+        return repository.save(tutor);
+    }
+
+    // Telefones são removidos junto com o tutor; se houver pets vinculados,
+    // o banco recusa e a transação inteira é desfeita (409 pelo handler)
+    @Transactional
+    public void excluir(Integer id) {
+        Tutor tutor = buscarPorId(id);
+        telefoneRepository.deleteAll(telefoneRepository.findByTutor_IdTutor(id));
+        repository.delete(tutor);
+    }
+
+    private void validar(Tutor tutor) {
         if (tutor.getCpf() == null || tutor.getCpf().isBlank()) {
             throw new IllegalArgumentException("O CPF do tutor é obrigatório");
         }
@@ -34,7 +74,15 @@ public class TutorService {
         if (tutor.getNumero() == null || tutor.getNumero().isBlank()) {
             throw new IllegalArgumentException("O número do endereço do tutor é obrigatório");
         }
-        return repository.save(tutor);
+    }
+
+    // idAtual: id do próprio tutor em uma atualização (null no cadastro)
+    private void validarCpfUnico(String cpf, Integer idAtual) {
+        repository.findByCpf(cpf)
+                .filter(existente -> !existente.getIdTutor().equals(idAtual))
+                .ifPresent(existente -> {
+                    throw new IllegalArgumentException("Já existe um tutor cadastrado com este CPF");
+                });
     }
 
 }
