@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.pi3sem.backend.model.Especie;
 import com.example.pi3sem.backend.model.Vacina;
 import com.example.pi3sem.backend.model.VacinaEspecie;
 import com.example.pi3sem.backend.service.VacinaEspecieService;
@@ -53,6 +54,11 @@ public class VacinaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Integer id) {
         service.excluir(id);
+    }
+
+    @GetMapping("/{id}/especies")
+    public List<Especie> listarEspecies(@PathVariable Integer id) {
+        return vacinaEspecieService.listarEspeciesDaVacina(id);
     }
 
     @PostMapping("/{id}/especies/{especieId}")

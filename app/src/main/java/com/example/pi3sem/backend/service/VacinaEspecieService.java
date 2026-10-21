@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.pi3sem.backend.model.Especie;
 import com.example.pi3sem.backend.model.VacinaEspecie;
 import com.example.pi3sem.backend.repository.VacinaEspecieRepository;
 
@@ -36,6 +37,13 @@ public class VacinaEspecieService {
             throw new IllegalArgumentException("A Espécie é obrigatória");
         }
         return vincular(vacinaEspecie.getVacina().getIdVacina(), vacinaEspecie.getEspecie().getIdEspecie());
+    }
+
+    public List<Especie> listarEspeciesDaVacina(Integer idVacina) {
+        vacinaService.buscarPorId(idVacina);
+        return repository.findByVacina_IdVacina(idVacina).stream()
+                .map(VacinaEspecie::getEspecie)
+                .toList();
     }
 
     // Indica que a vacina pode ser aplicada na espécie
