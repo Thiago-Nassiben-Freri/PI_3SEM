@@ -11,9 +11,14 @@ import com.example.pi3sem.backend.repository.VacinaEspecieRepository;
 public class VacinaEspecieService {
 
     private final VacinaEspecieRepository repository;
+    private final VacinaService vacinaService;
+    private final EspecieService especieService;
 
-    public VacinaEspecieService(VacinaEspecieRepository repository) {
+    public VacinaEspecieService(VacinaEspecieRepository repository, VacinaService vacinaService,
+            EspecieService especieService) {
         this.repository = repository;
+        this.vacinaService = vacinaService;
+        this.especieService = especieService;
     }
 
     public List<VacinaEspecie> listar() {
@@ -30,8 +35,18 @@ public class VacinaEspecieService {
         if (vacinaEspecie.getEspecie() == null || vacinaEspecie.getEspecie().getIdEspecie() == null) {
             throw new IllegalArgumentException("A Espécie é obrigatória");
         }
+        return vincular(vacinaEspecie.getVacina().getIdVacina(), vacinaEspecie.getEspecie().getIdEspecie());
+    }
 
-        return repository.save(vacinaEspecie);
+    // Indica que a vacina pode ser aplicada na espécie
+    public VacinaEspecie vincular(Integer idVacina, Integer idEspecie) {
+        VacinaEspecie vinculo = new VacinaEspecie();
+        vinculo.setVacina(vacinaService.buscarPorId(idVacina));
+        vinculo.setEspecie(especieService.buscarPorId(idEspecie));
+        if (repository.existsByVacina_IdVacinaAndEspecie_IdEspecie(idVacina, idEspecie)) {
+            throw new IllegalArgumentException("Esta vacina já está vinculada a esta espécie");
+        }
+        return repository.save(vinculo);
     }
 
 }
