@@ -108,6 +108,9 @@ public class AgendamentoService {
 
     // Usado pelo registro da aplicação da vacina
     public Agendamento marcarComoRealizado(Agendamento agendamento) {
+        if (agendamento.getStatus() == StatusAgendamento.REALIZADO) {
+            throw new IllegalArgumentException("Este agendamento já foi realizado e possui aplicação registrada");
+        }
         validarEmAberto(agendamento, "realizado");
         agendamento.setStatus(StatusAgendamento.REALIZADO);
         return repository.save(agendamento);

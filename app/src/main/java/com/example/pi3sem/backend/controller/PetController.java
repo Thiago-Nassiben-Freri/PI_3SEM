@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.pi3sem.backend.dto.ProntuarioDTO;
 import com.example.pi3sem.backend.model.Agendamento;
+import com.example.pi3sem.backend.model.AplicacaoVacina;
 import com.example.pi3sem.backend.model.Pet;
 import com.example.pi3sem.backend.service.AgendamentoService;
+import com.example.pi3sem.backend.service.AplicacaoVacinaService;
 import com.example.pi3sem.backend.service.PetService;
+import com.example.pi3sem.backend.service.ProntuarioService;
 
 @RestController
 @RequestMapping("/pets")
@@ -23,10 +27,15 @@ public class PetController {
 
     private final PetService service;
     private final AgendamentoService agendamentoService;
+    private final AplicacaoVacinaService aplicacaoVacinaService;
+    private final ProntuarioService prontuarioService;
 
-    public PetController(PetService service, AgendamentoService agendamentoService) {
+    public PetController(PetService service, AgendamentoService agendamentoService,
+            AplicacaoVacinaService aplicacaoVacinaService, ProntuarioService prontuarioService) {
         this.service = service;
         this.agendamentoService = agendamentoService;
+        this.aplicacaoVacinaService = aplicacaoVacinaService;
+        this.prontuarioService = prontuarioService;
     }
 
     @GetMapping
@@ -61,5 +70,15 @@ public class PetController {
     @GetMapping("/{id}/agendamentos")
     public List<Agendamento> listarAgendamentos(@PathVariable Integer id) {
         return agendamentoService.listarPorPet(id);
+    }
+
+    @GetMapping("/{id}/aplicacoes")
+    public List<AplicacaoVacina> listarAplicacoes(@PathVariable Integer id) {
+        return aplicacaoVacinaService.listarPorPet(id);
+    }
+
+    @GetMapping("/{id}/prontuario")
+    public ProntuarioDTO prontuario(@PathVariable Integer id) {
+        return prontuarioService.gerar(id);
     }
 }

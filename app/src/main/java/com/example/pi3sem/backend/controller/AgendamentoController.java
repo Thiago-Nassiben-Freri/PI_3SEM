@@ -16,17 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pi3sem.backend.model.Agendamento;
+import com.example.pi3sem.backend.model.AplicacaoVacina;
 import com.example.pi3sem.backend.model.StatusAgendamento;
 import com.example.pi3sem.backend.service.AgendamentoService;
+import com.example.pi3sem.backend.service.AplicacaoVacinaService;
 
 @RestController
 @RequestMapping("/agendamentos")
 public class AgendamentoController {
 
     private final AgendamentoService service;
+    private final AplicacaoVacinaService aplicacaoVacinaService;
 
-    public AgendamentoController(AgendamentoService service) {
+    public AgendamentoController(AgendamentoService service, AplicacaoVacinaService aplicacaoVacinaService) {
         this.service = service;
+        this.aplicacaoVacinaService = aplicacaoVacinaService;
     }
 
     // Datas no formato ISO: 2026-11-01T08:00:00
@@ -64,6 +68,15 @@ public class AgendamentoController {
     @PatchMapping("/{id}/status")
     public Agendamento alterarStatus(@PathVariable Integer id, @RequestBody Agendamento agendamento) {
         return service.alterarStatus(id, agendamento.getStatus());
+    }
+
+    // Registra a vacina aplicada no atendimento e marca o agendamento como REALIZADO.
+    // Corpo: {"numeroDose": 1, "lote": "...", "validadeLote": "2027-01-01"}; pet, vacina
+    // e veterinário vêm do agendamento
+    @PostMapping("/{id}/aplicacao")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AplicacaoVacina registrarAplicacao(@PathVariable Integer id, @RequestBody AplicacaoVacina aplicacao) {
+        return aplicacaoVacinaService.registrarDeAgendamento(id, aplicacao);
     }
 
     @DeleteMapping("/{id}")
