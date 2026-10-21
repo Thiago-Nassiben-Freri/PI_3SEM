@@ -17,6 +17,12 @@ public class GlobalExceptionHandler {
         return resposta(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
+    // 401 - login ou senha incorretos, ou usuário inativo
+    @ExceptionHandler(CredenciaisInvalidasException.class)
+    public ResponseEntity<ErroResposta> tratarCredenciaisInvalidas(CredenciaisInvalidasException ex) {
+        return resposta(HttpStatus.UNAUTHORIZED, ex.getMessage());
+    }
+
     // 400 - regras de validação dos services
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErroResposta> tratarArgumentoInvalido(IllegalArgumentException ex) {
