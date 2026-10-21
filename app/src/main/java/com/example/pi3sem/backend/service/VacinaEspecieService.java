@@ -55,6 +55,10 @@ public class VacinaEspecieService {
                 .toList();
     }
 
+    public boolean vacinaServeParaEspecie(Integer idVacina, Integer idEspecie) {
+        return repository.existsByVacina_IdVacinaAndEspecie_IdEspecie(idVacina, idEspecie);
+    }
+
     // Indica que a vacina pode ser aplicada na espécie
     public VacinaEspecie vincular(Integer idVacina, Integer idEspecie) {
         VacinaEspecie vinculo = new VacinaEspecie();
