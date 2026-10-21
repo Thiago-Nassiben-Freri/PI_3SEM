@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,8 +26,9 @@ public class Agendamento {
     @Column (name = "data_hora", nullable = false)
     private LocalDateTime dataHora;
 
+    @Enumerated (EnumType.STRING)
     @Column (name = "status", columnDefinition = "VARCHAR(20) DEFAULT 'AGENDADO'", nullable = false)
-    private String status;
+    private StatusAgendamento status;
 
     @Column (name = "observacao", nullable = true)
     private String observacao;
@@ -60,11 +63,11 @@ public class Agendamento {
         this.dataHora = dataHora;
     }
 
-    public String getStatus() {
+    public StatusAgendamento getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusAgendamento status) {
         this.status = status;
     }
 

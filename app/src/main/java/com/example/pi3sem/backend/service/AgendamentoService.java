@@ -3,6 +3,7 @@ package com.example.pi3sem.backend.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.example.pi3sem.backend.model.Agendamento;
+import com.example.pi3sem.backend.model.StatusAgendamento;
 import com.example.pi3sem.backend.repository.AgendamentoRepository;
 
 @Service 
@@ -25,8 +26,8 @@ public class AgendamentoService {
         if (agendamento.getDataHora() == null || agendamento.getDataHora().isBefore(java.time.LocalDateTime.now())) {
             throw new IllegalArgumentException("A data e hora do agendamento são obrigatórias");
         }
-        if (agendamento.getStatus() == null || agendamento.getStatus().isBlank()) {
-            throw new IllegalArgumentException("O status do agendamento é obrigatório");
+        if (agendamento.getStatus() == null) {
+            agendamento.setStatus(StatusAgendamento.AGENDADO);
         }
         if (agendamento.getPet() == null || agendamento.getPet().getIdPet() == null) {
             throw new IllegalArgumentException("O pet do agendamento é obrigatório");
