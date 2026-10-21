@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,5 +37,10 @@ public class VeterinarioController {
     @ResponseStatus(HttpStatus.CREATED)
     public Veterinario salvar(@RequestBody Veterinario veterinario) {
         return service.salvar(veterinario);
+    }
+
+    @PutMapping("/{id}")
+    public Veterinario atualizar(@PathVariable Integer id, @RequestBody Veterinario veterinario) {
+        return service.atualizar(id, veterinario);
     }
 }

@@ -48,6 +48,16 @@ public class VeterinarioService {
         return repository.save(veterinario);
     }
 
+    // Altera só os dados de veterinário; nome, login, email e senha ficam em PUT /usuarios/{id}
+    public Veterinario atualizar(Integer id, Veterinario dados) {
+        Veterinario veterinario = buscarPorId(id);
+        validar(dados);
+        validarCrmvUnico(dados.getCrmv(), id);
+        veterinario.setCrmv(dados.getCrmv());
+        veterinario.setTelefone(dados.getTelefone());
+        return repository.save(veterinario);
+    }
+
     private void validar(Veterinario veterinario) {
         if (veterinario == null) {
             throw new IllegalArgumentException("O veterinario não pode ser nulo");
