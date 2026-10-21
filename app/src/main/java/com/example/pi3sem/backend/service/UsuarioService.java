@@ -7,16 +7,20 @@ import org.springframework.stereotype.Service;
 
 import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Usuario;
+import com.example.pi3sem.backend.repository.AdminRepository;
 import com.example.pi3sem.backend.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 
     private final UsuarioRepository repository;
+    private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepository repository, AdminRepository adminRepository,
+            PasswordEncoder passwordEncoder) {
         this.repository = repository;
+        this.adminRepository = adminRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -43,6 +47,22 @@ public class UsuarioService {
         if (usuario.getAtivo() == null) {
             usuario.setAtivo(true);
         }
+        return repository.save(usuario);
+    }
+
+    // Desativar em vez de excluir: o usuário continua ligado ao histórico
+    // (agendamentos, aplicações), mas deixa de poder usar o sistema
+    public Usuario alterarAtivo(Integer id, Boolean ativo) {
+        if (ativo == null) {
+            throw new IllegalArgumentException("O campo ativo é obrigatório");
+        }
+        Usuario usuario = buscarPorId(id);
+        if (!ativo && Boolean.TRUE.equals(usuario.getAtivo())
+                && adminRepository.existsById(id)
+                && adminRepository.countByUsuario_AtivoTrue() <= 1) {
+            throw new IllegalArgumentException("Não é possível desativar o último administrador ativo");
+        }
+        usuario.setAtivo(ativo);
         return repository.save(usuario);
     }
 

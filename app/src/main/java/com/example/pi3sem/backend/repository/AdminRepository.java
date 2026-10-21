@@ -6,7 +6,9 @@ import com.example.pi3sem.backend.model.Admin;
 /**
  * Repository para a entidade Admin.
  * AdminRepository
+ * long countByUsuario_AtivoTrue(): Método para contar os administradores com usuário ativo.
  */
 
-public interface AdminRepository extends JpaRepository<Admin, Integer> {   
+public interface AdminRepository extends JpaRepository<Admin, Integer> {
+    long countByUsuario_AtivoTrue();
 }
