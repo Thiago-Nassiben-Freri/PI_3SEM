@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Especie;
+import com.example.pi3sem.backend.model.Vacina;
 import com.example.pi3sem.backend.model.VacinaEspecie;
 import com.example.pi3sem.backend.repository.VacinaEspecieRepository;
 
@@ -44,6 +45,13 @@ public class VacinaEspecieService {
         vacinaService.buscarPorId(idVacina);
         return repository.findByVacina_IdVacina(idVacina).stream()
                 .map(VacinaEspecie::getEspecie)
+                .toList();
+    }
+
+    public List<Vacina> listarVacinasDaEspecie(Integer idEspecie) {
+        especieService.buscarPorId(idEspecie);
+        return repository.findByEspecie_IdEspecie(idEspecie).stream()
+                .map(VacinaEspecie::getVacina)
                 .toList();
     }
 
