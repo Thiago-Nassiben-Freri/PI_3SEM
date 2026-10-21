@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Usuario;
 import com.example.pi3sem.backend.model.Veterinario;
 import com.example.pi3sem.backend.repository.VeterinarioRepository;
@@ -22,6 +23,11 @@ public class VeterinarioService {
 
     public List<Veterinario> listar() {
         return repository.findAll();
+    }
+
+    public Veterinario buscarPorId(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Veterinário", id));
     }
 
     // Cria o usuário (ou reaproveita um existente pelo idUsuario) e o veterinário
