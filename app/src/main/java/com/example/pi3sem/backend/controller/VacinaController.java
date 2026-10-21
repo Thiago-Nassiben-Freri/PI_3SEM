@@ -66,4 +66,10 @@ public class VacinaController {
     public VacinaEspecie vincularEspecie(@PathVariable Integer id, @PathVariable Integer especieId) {
         return vacinaEspecieService.vincular(id, especieId);
     }
+
+    @DeleteMapping("/{id}/especies/{especieId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desvincularEspecie(@PathVariable Integer id, @PathVariable Integer especieId) {
+        vacinaEspecieService.desvincular(id, especieId);
+    }
 }

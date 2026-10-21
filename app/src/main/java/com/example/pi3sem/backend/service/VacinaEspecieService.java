@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Especie;
 import com.example.pi3sem.backend.model.VacinaEspecie;
 import com.example.pi3sem.backend.repository.VacinaEspecieRepository;
@@ -55,6 +56,13 @@ public class VacinaEspecieService {
             throw new IllegalArgumentException("Esta vacina já está vinculada a esta espécie");
         }
         return repository.save(vinculo);
+    }
+
+    public void desvincular(Integer idVacina, Integer idEspecie) {
+        VacinaEspecie vinculo = repository.findByVacina_IdVacinaAndEspecie_IdEspecie(idVacina, idEspecie)
+                .orElseThrow(() -> new RecursoNaoEncontradoException(
+                        "Vínculo entre a vacina " + idVacina + " e a espécie " + idEspecie + " não encontrado"));
+        repository.delete(vinculo);
     }
 
 }
