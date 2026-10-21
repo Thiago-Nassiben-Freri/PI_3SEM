@@ -3,6 +3,7 @@ package com.example.pi3sem.backend.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Admin;
 import com.example.pi3sem.backend.model.Usuario;
 import com.example.pi3sem.backend.repository.AdminRepository;
@@ -20,6 +21,20 @@ public class AdminService {
 
     public List<Admin> listar() {
         return repository.findAll();
+    }
+
+    public Admin buscarPorId(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Admin", id));
+    }
+
+    // Remove só o papel de administrador; o usuário continua existindo
+    public void excluir(Integer id) {
+        Admin admin = buscarPorId(id);
+        if (repository.count() <= 1) {
+            throw new IllegalArgumentException("Não é possível remover o último administrador");
+        }
+        repository.delete(admin);
     }
 
     // Com usuario.idUsuario promove um usuário existente (ex.: um veterinário);
