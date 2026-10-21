@@ -8,5 +8,5 @@ import com.example.pi3sem.backend.model.VacinaEspecie;
  * VacinaEspecieRepository
  */
 
-public interface VacinaEspecieRepository extends JpaRepository <VacinaEspecie, Integer> {
+public interface VacinaEspecieRepository extends JpaRepository <VacinaEspecie, Long> {
 }
