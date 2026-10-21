@@ -76,6 +76,10 @@ public class NotificacaoService {
         return repository.contarNaoLidas();
     }
 
+    public long contarPendentes() {
+        return repository.countByStatus(StatusNotificacao.PENDENTE);
+    }
+
     // Cria a notificação como PENDENTE, para revisão antes do envio (tela de envio via WhatsApp)
     public Notificacao salvar(Notificacao notificacao) {
         validar(notificacao);

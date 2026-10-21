@@ -18,6 +18,7 @@ import java.util.List;
  * boolean existsByAplicacaoVacina_IdAplicacaoVacinaAndTipo(...): Verifica se já existe lembrete para a aplicação.
  * boolean existsByAgendamento_IdAgendamentoAndTipo(...): Verifica se já existe lembrete para o agendamento.
  * long contarNaoLidas(): Conta as notificações ainda não lidas.
+ * long countByStatus(StatusNotificacao status): Conta as notificações em um status.
  */
 
 public interface NotificacaoRepository extends JpaRepository<Notificacao, Integer> {
@@ -49,4 +50,6 @@ public interface NotificacaoRepository extends JpaRepository<Notificacao, Intege
 
     @Query("SELECT COUNT(n) FROM Notificacao n WHERE COALESCE(n.lida, FALSE) = FALSE")
     long contarNaoLidas();
+
+    long countByStatus(StatusNotificacao status);
 }

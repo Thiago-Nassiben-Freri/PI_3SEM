@@ -162,6 +162,11 @@ public class AplicacaoVacinaService {
                 .toList();
     }
 
+    // Situação da próxima dose de todas as vacinas aplicadas em todos os pets (usado nos relatórios)
+    public List<ProximaDoseDTO> listarTodasDoses() {
+        return calcularDoses(repository.buscarUltimasAplicacoes(), 30);
+    }
+
     // Situação de todas as vacinas já aplicadas no pet (usado no prontuário)
     public List<ProximaDoseDTO> listarDosesDoPet(Integer idPet, int diasAlerta) {
         return calcularDoses(repository.buscarUltimasAplicacoesDoPet(idPet), diasAlerta);
