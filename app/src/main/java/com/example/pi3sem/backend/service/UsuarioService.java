@@ -50,6 +50,23 @@ public class UsuarioService {
         return repository.save(usuario);
     }
 
+    // Senha é opcional: se vier vazia, a atual é mantida
+    public Usuario atualizar(Integer id, Usuario dados) {
+        Usuario usuario = buscarPorId(id);
+        if (dados == null) {
+            throw new IllegalArgumentException("Usuário não pode ser nulo");
+        }
+        validar(dados);
+        validarUnicidade(dados.getLogin(), dados.getEmail(), id);
+        usuario.setNome(dados.getNome());
+        usuario.setLogin(dados.getLogin());
+        usuario.setEmail(dados.getEmail());
+        if (dados.getSenha() != null && !dados.getSenha().isBlank()) {
+            usuario.setSenha(passwordEncoder.encode(dados.getSenha()));
+        }
+        return repository.save(usuario);
+    }
+
     // Desativar em vez de excluir: o usuário continua ligado ao histórico
     // (agendamentos, aplicações), mas deixa de poder usar o sistema
     public Usuario alterarAtivo(Integer id, Boolean ativo) {
