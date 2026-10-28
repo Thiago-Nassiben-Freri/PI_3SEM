@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pi3sem.backend.model.Especie;
 import com.example.pi3sem.backend.model.Raca;
+import com.example.pi3sem.backend.model.Vacina;
 import com.example.pi3sem.backend.service.EspecieService;
 import com.example.pi3sem.backend.service.RacaService;
+import com.example.pi3sem.backend.service.VacinaEspecieService;
 
 @RestController
 @RequestMapping("/especies")
@@ -22,10 +24,13 @@ public class EspecieController {
 
     private final EspecieService service;
     private final RacaService racaService;
+    private final VacinaEspecieService vacinaEspecieService;
 
-    public EspecieController(EspecieService service, RacaService racaService) {
+    public EspecieController(EspecieService service, RacaService racaService,
+            VacinaEspecieService vacinaEspecieService) {
         this.service = service;
         this.racaService = racaService;
+        this.vacinaEspecieService = vacinaEspecieService;
     }
 
     @GetMapping
@@ -58,6 +63,11 @@ public class EspecieController {
     @GetMapping("/{id}/racas")
     public List<Raca> listarRacas(@PathVariable Integer id) {
         return racaService.listarPorEspecie(id);
+    }
+
+    @GetMapping("/{id}/vacinas")
+    public List<Vacina> listarVacinas(@PathVariable Integer id) {
+        return vacinaEspecieService.listarVacinasDaEspecie(id);
     }
 
 }

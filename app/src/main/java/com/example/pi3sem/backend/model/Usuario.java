@@ -1,5 +1,7 @@
 package com.example.pi3sem.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +25,9 @@ public class Usuario {
     @Column (name = "login", unique = true, nullable = false, length = 60)
     private String login;
 
-    @Column (name = "senha", unique = true, nullable = false, length = 255)
+    // WRITE_ONLY: a senha é aceita no JSON de entrada, mas nunca aparece nas respostas
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column (name = "senha", nullable = false, length = 255)
     private String senha;
 
     @Column (name = "email", unique = true, nullable = false, length = 100)

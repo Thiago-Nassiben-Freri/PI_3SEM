@@ -2,22 +2,44 @@ package com.example.pi3sem.backend.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Admin;
+import com.example.pi3sem.backend.model.Usuario;
 import com.example.pi3sem.backend.repository.AdminRepository;
 
 @Service
 public class AdminService {
 
     private final AdminRepository repository;
+    private final UsuarioService usuarioService;
 
-    public AdminService(AdminRepository repository) {
+    public AdminService(AdminRepository repository, UsuarioService usuarioService) {
         this.repository = repository;
+        this.usuarioService = usuarioService;
     }
 
     public List<Admin> listar() {
         return repository.findAll();
     }
 
+    public Admin buscarPorId(Integer id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Admin", id));
+    }
+
+    // Remove só o papel de administrador; o usuário continua existindo
+    public void excluir(Integer id) {
+        Admin admin = buscarPorId(id);
+        if (repository.count() <= 1) {
+            throw new IllegalArgumentException("Não é possível remover o último administrador");
+        }
+        repository.delete(admin);
+    }
+
+    // Com usuario.idUsuario promove um usuário existente (ex.: um veterinário);
+    // sem idUsuario cria um usuário novo, na mesma transação
+    @Transactional
     public Admin salvar(Admin admin) {
         if (admin ==  null) {
             throw new IllegalArgumentException("O admin não pode ser nulo");
@@ -25,6 +47,12 @@ public class AdminService {
         if (admin.getUsuario() == null) {
             throw new IllegalArgumentException("O usuário do admin é obrigatório");
         }
+        Usuario usuario = usuarioService.buscarOuCriar(admin.getUsuario());
+        if (repository.existsById(usuario.getIdUsuario())) {
+            throw new IllegalArgumentException("Este usuário já é administrador");
+        }
+        admin.setId(null);
+        admin.setUsuario(usuario);
         return repository.save(admin);
     }
 

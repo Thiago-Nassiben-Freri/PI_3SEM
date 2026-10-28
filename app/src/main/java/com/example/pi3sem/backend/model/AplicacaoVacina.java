@@ -1,6 +1,6 @@
 package com.example.pi3sem.backend.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -32,7 +32,7 @@ public class AplicacaoVacina {
     private String lote;
 
     @Column (name = "validade_lote", nullable = true)
-    private Date validadeLote;
+    private LocalDate validadeLote;
 
     @Column (name = "observacao", nullable = true)
     private String observacao;
@@ -86,11 +86,11 @@ public class AplicacaoVacina {
         this.lote = lote;
     }
 
-    public Date getValidadeLote() {
+    public LocalDate getValidadeLote() {
         return validadeLote;
     }
 
-    public void setValidadeLote(Date validadeLote) {
+    public void setValidadeLote(LocalDate validadeLote) {
         this.validadeLote = validadeLote;
     }
 
