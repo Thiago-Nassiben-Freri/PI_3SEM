@@ -12,13 +12,12 @@ Este documento reúne a especificação consolidada de **Requisitos Funcionais (
 |---|---|---|
 | **RF01** | **Notificação via WhatsApp:** O sistema deve enviar notificações sobre o período e prazos de vacinação diretamente via WhatsApp. | *Must Have* |
 | **RF02** | **Cadastro de Usuários do Software:** O sistema deve permitir o cadastro de usuários operacionais (médicos veterinários) para autenticação e uso do software. | *Must Have* |
-| **RF03** | **Cadastro de Administrador do Sistema:** O sistema deve permitir o cadastro e gerenciamento de administradores para controle de acessos e configurações. | *Must Have* |
-| **RF04** | **Sistema de Agenda e Horários:** O sistema deve disponibilizar um módulo de agendamento de atendimentos presenciais, com definição de datas e horários de vacinação. | *Must Have* |
-| **RF05** | **Cadastro de Vacinas:** O sistema deve permitir o cadastramento do catálogo de vacinas disponíveis, incluindo tipo, dosagem e periodicidade. | *Must Have* |
-| **RF06** | **Prontuário Médico do Animal:** O sistema deve registrar e manter o histórico do prontuário médico dos Pets. | *Should Have* |
-| **RF07** | **Cadastro de Tutores:** O sistema deve permitir o cadastro dos tutores dos animais domésticos e seu vínculo aos respectivos Pets. | *Should Have* |
-| **RF08** | **Notificações Alternativas:** O sistema poderá disponibilizar envio de lembretes e avisos via e-mail (correio eletrônico) e/ou SMS. | *Could Have* |
-| **RF09** | **Suporte Multiplataforma:** O sistema poderá evoluir para interfaces móveis (aplicativo celular), versão Web ou arquiteturas SaaS/PaaS. | *Could Have* |
+| **RF03** | **Sistema de Agenda e Horários:** O sistema deve disponibilizar um módulo de agendamento de atendimentos presenciais, com definição de datas e horários de vacinação. | *Must Have* |
+| **RF04** | **Cadastro de Vacinas:** O sistema deve permitir o cadastramento do catálogo de vacinas disponíveis, incluindo tipo, dosagem e periodicidade. | *Must Have* |
+| **RF05** | **Prontuário Médico do Animal:** O sistema deve registrar e manter o histórico do prontuário médico dos Pets. | *Should Have* |
+| **RF06** | **Cadastro de Tutores:** O sistema deve permitir o cadastro dos tutores dos animais domésticos e seu vínculo aos respectivos Pets. | *Should Have* |
+| **RF07** | **Notificações Alternativas:** O sistema poderá disponibilizar envio de lembretes e avisos via e-mail (correio eletrônico) e/ou SMS. | *Could Have* |
+| **RF08** | **Suporte Multiplataforma:** O sistema poderá evoluir para interfaces móveis (aplicativo celular), versão Web ou arquiteturas SaaS/PaaS. | *Could Have* |
 
 ---
 
@@ -39,7 +38,7 @@ Este documento reúne a especificação consolidada de **Requisitos Funcionais (
 
 *Políticas e direcionamentos estratégicos que definem o comportamento e os limites do software.*
 
-* **RN01 - Exclusividade de Acesso Interno (*Won't Have / Must Have*):** O acesso ao software é estritamente restrito aos usuários cadastrados da empresa (médicos veterinários e administradores). Atores externos, tais como tutores ou fornecedores, **não** possuem perfil nem acesso direto ao sistema.
+* **RN01 - Exclusividade de Acesso Interno (*Won't Have / Must Have*):** O acesso ao software é estritamente restrito aos usuários cadastrados da empresa (médicos veterinários). Atores externos, tais como tutores ou fornecedores, **não** possuem perfil nem acesso direto ao sistema.
 * **RN02 - Ausência de Controle de Estoque (*Won't Have*):** O sistema **não** realizará gestão, baixa automática ou controle de estoque físico das vacinas.
 * **RN03 - Canal Principal de Notificação (*Must Have*):** O meio primário padronizado para o envio de avisos e lembretes de vacinação aos veterinários é o **WhatsApp**.
 * **RN04 - Escopo Operacional Focado:** O software destina-se exclusivamente ao acompanhamento imunológico e médico presencial do animal, estando fora do escopo funcionalidades financeiras, vendas, banho e tosa, ou hospedagem.

@@ -80,9 +80,9 @@ Para o desenvolvimento do software PetVax, os riscos podem ser:
 
 O quadro abaixo apresenta os stakeholders deste projeto. 
 
-|**Nome**|**Descrição**|**Responsabilidade**<br>**s**|**Stakeholder**|
+|**Nome**|**Descrição**|**Responsabilidades**|**Stakeholder**|
 |---|---|---|---|
-|Administrador do<br>sistema|Responsável por<br>acompanhar a<br>disponibilidade do<br>sistema e<br>solucionar questões<br>de infraestrutura.|Manter a<br>infraestrutura do<br>sistema disponível<br>e realizar a<br>manutenção<br>técnica necessária.|Administrador /<br>Gerente de TI|
+|Equipe de desenvolvimento|Responsável por<br>acompanhar a<br>disponibilidade do<br>sistema e<br>solucionar questões<br>de infraestrutura.|Manter a<br>infraestrutura do<br>sistema disponível<br>e realizar a<br>manutenção<br>técnica necessária.|Desenvolvedores/mantenedores
 |Médicos<br>Veterinários|Proprietários da<br>empresa e únicos<br>usuários<br>operacionais do<br>sistema. Realizam<br>os atendimentos de<br>forma presencial.|Cadastrar tutores,<br>Pets e vacinas;<br>realizar e gerenciar<br>agendamentos;<br>registrar<br>aplicações;<br>consultar históricos;<br>acompanhar<br>notificações e<br>próximas doses.|Usuários do<br>Sistema|
 |Tutores|Responsáveis<br>pelos animais<br>atendidos pela<br>empresa.|Fornecer aos<br>médicos<br>veterinários as<br>informações<br>necessárias sobre<br>seus Pets e receber<br>orientações<br>relacionadas à<br>vacinação durante<br>o atendimento.|Clientes da<br>Empresa|
 
