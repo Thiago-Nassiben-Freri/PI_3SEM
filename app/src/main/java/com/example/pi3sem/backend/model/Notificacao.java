@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,39 +18,48 @@ import jakarta.persistence.Table;
 public class Notificacao {
 
     // Atributos
-    @Id 
+    @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column (name = "id_notificacao")
     private Integer idNotificacao;
 
+    @Enumerated (EnumType.STRING)
     @Column (name = "tipo", nullable = false, length = 30)
-    private String tipo;
+    private TipoNotificacao tipo;
 
+    @Enumerated (EnumType.STRING)
     @Column (name = "canal", nullable = false, length = 20)
-    private String canal;
+    private CanalNotificacao canal;
 
     @Column (name = "mensagem", nullable = false)
     private String mensagem;
 
+    // Data prevista para o envio; ao enviar, passa a ser a data do envio
     @Column (name = "data_envio", nullable = false)
     private LocalDate dataEnvio;
 
+    @Enumerated (EnumType.STRING)
     @Column (name = "status", nullable = false, length = 20)
-    private String status;
+    private StatusNotificacao status;
 
-    @ManyToOne 
-    @JoinColumn (name = "fk_agendamento_id_agendamento", nullable = false)
+    // Indica se o veterinário já viu a notificação na tela de Notificações
+    @Column (name = "lida")
+    private Boolean lida;
+
+    // Agendamento e aplicação são opcionais (0,1) no modelo lógico
+    @ManyToOne
+    @JoinColumn (name = "fk_agendamento_id_agendamento", nullable = true)
     private Agendamento agendamento;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn (name = "fk_veterinario_id_usuario", nullable = false)
     private Veterinario veterinario;
 
-    @ManyToOne 
-    @JoinColumn (name = "fk_aplicacao_vacina_id_aplicacao_vacina", nullable = false)
+    @ManyToOne
+    @JoinColumn (name = "fk_aplicacao_vacina_id_aplicacao_vacina", nullable = true)
     private AplicacaoVacina aplicacaoVacina;
 
-    @ManyToOne 
+    @ManyToOne
     @JoinColumn (name = "fk_tutor_id_tutor", nullable = false)
     private Tutor tutor;
 
@@ -61,19 +72,19 @@ public class Notificacao {
         this.idNotificacao = idNotificacao;
     }
 
-    public String getTipo() {
+    public TipoNotificacao getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoNotificacao tipo) {
         this.tipo = tipo;
     }
 
-    public String getCanal() {
+    public CanalNotificacao getCanal() {
         return canal;
     }
 
-    public void setCanal(String canal) {
+    public void setCanal(CanalNotificacao canal) {
         this.canal = canal;
     }
 
@@ -93,12 +104,20 @@ public class Notificacao {
         this.dataEnvio = dataEnvio;
     }
 
-    public String getStatus() {
+    public StatusNotificacao getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusNotificacao status) {
         this.status = status;
+    }
+
+    public Boolean getLida() {
+        return lida;
+    }
+
+    public void setLida(Boolean lida) {
+        this.lida = lida;
     }
 
     public Agendamento getAgendamento() {
