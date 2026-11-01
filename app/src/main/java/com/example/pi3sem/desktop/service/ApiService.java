@@ -52,7 +52,8 @@ public class ApiService {
 
         usuarioLogado = mapper.readValue(response.body(), UsuarioLogado.class);
 
-        // A API usa HTTP Basic: as próximas requisições mandam login e senha neste cabeçalho
+        // A API usa HTTP Basic: as próximas requisições mandam login e senha neste
+        // cabeçalho
         String credenciais = usuarioLogado.getLogin() + ":" + senha;
         autorizacao = "Basic " + Base64.getEncoder().encodeToString(credenciais.getBytes());
 
@@ -74,6 +75,12 @@ public class ApiService {
     // Ex.: ApiService.put("/tutores/5", tutor)
     public static String put(String caminho, Object corpo) throws Exception {
         return enviar("PUT", caminho, corpo);
+    }
+
+    // Altera só parte do registro. Ex.: ApiService.patch("/agendamentos/5/status",
+    // agendamento)
+    public static String patch(String caminho, Object corpo) throws Exception {
+        return enviar("PATCH", caminho, corpo);
     }
 
     // Ex.: ApiService.delete("/tutores/5")
@@ -119,7 +126,8 @@ public class ApiService {
         return response.body();
     }
 
-    // A API devolve os erros assim: {"status": 400, "mensagem": "Nome é obrigatório"}
+    // A API devolve os erros assim: {"status": 400, "mensagem": "Nome é
+    // obrigatório"}
     private static String mensagemDeErro(HttpResponse<String> response) {
         try {
             Map<?, ?> erro = mapper.readValue(response.body(), Map.class);

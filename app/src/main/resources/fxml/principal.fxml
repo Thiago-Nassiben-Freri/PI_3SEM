@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!-- Estrutura principal: menu lateral fixo à esquerda e a tela escolhida no centro -->
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="painelPrincipal"
+            fx:controller="com.example.pi3sem.desktop.controller.PrincipalController"
+            style="-fx-background-color: white;">
+
+    <left>
+        <VBox prefWidth="230" spacing="6" style="-fx-background-color: #0f3d32;">
+            <padding>
+                <Insets top="25" right="15" bottom="25" left="15" />
+            </padding>
+
+            <Label text="VET HOME" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="22" />
+                </font>
+                <VBox.margin>
+                    <Insets left="10" />
+                </VBox.margin>
+            </Label>
+            <Label text="Gestão veterinária" textFill="#b9cec7">
+                <VBox.margin>
+                    <Insets left="10" bottom="25" />
+                </VBox.margin>
+            </Label>
+
+            <!-- Um botão por tela -->
+            <Button fx:id="btnInicio" text="Início" onAction="#abrirInicio"
+                    maxWidth="Infinity" prefHeight="40" alignment="CENTER_LEFT" textFill="WHITE"
+                    style="-fx-background-color: transparent;">
+                <font><Font size="14" /></font>
+            </Button>
+            <Button fx:id="btnAnimais" text="Animais" onAction="#abrirAnimais"
+                    maxWidth="Infinity" prefHeight="40" alignment="CENTER_LEFT" textFill="WHITE"
+                    style="-fx-background-color: transparent;">
+                <font><Font size="14" /></font>
+            </Button>
+            <Button fx:id="btnTutores" text="Tutores" onAction="#abrirTutores"
+                    maxWidth="Infinity" prefHeight="40" alignment="CENTER_LEFT" textFill="WHITE"
+                    style="-fx-background-color: transparent;">
+                <font><Font size="14" /></font>
+            </Button>
+            <Button fx:id="btnAgenda" text="Agenda" onAction="#abrirAgenda"
+                    maxWidth="Infinity" prefHeight="40" alignment="CENTER_LEFT" textFill="WHITE"
+                    style="-fx-background-color: transparent;">
+                <font><Font size="14" /></font>
+            </Button>
+            <Button fx:id="btnVacinas" text="Vacinas" onAction="#abrirVacinas"
+                    maxWidth="Infinity" prefHeight="40" alignment="CENTER_LEFT" textFill="WHITE"
+                    style="-fx-background-color: transparent;">
+                <font><Font size="14" /></font>
+            </Button>
+            <Button fx:id="btnNotificacoes" text="Notificações" onAction="#abrirNotificacoes"
+                    maxWidth="Infinity" prefHeight="40" alignment="CENTER_LEFT" textFill="WHITE"
+                    style="-fx-background-color: transparent;">
+                <font><Font size="14" /></font>
+            </Button>
+
+            <!-- Empurra o usuário e o botão Sair para o rodapé do menu -->
+            <Region VBox.vgrow="ALWAYS" />
+
+            <Label fx:id="lblUsuario" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="14" />
+                </font>
+                <VBox.margin>
+                    <Insets left="10" />
+                </VBox.margin>
+            </Label>
+            <Button text="Sair" onAction="#sair"
+                    maxWidth="Infinity" prefHeight="35" alignment="CENTER_LEFT" textFill="#b9cec7"
+                    style="-fx-background-color: transparent;" />
+        </VBox>
+    </left>
+</BorderPane>

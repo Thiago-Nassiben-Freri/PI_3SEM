@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!-- Tela Início (protótipo 02): resumo do dia -->
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.pi3sem.desktop.controller.InicioController"
+      spacing="20" style="-fx-background-color: white;">
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30" />
+    </padding>
+
+    <!-- Título e data -->
+    <VBox spacing="2">
+        <Label text="Início" textFill="#13352c">
+            <font>
+                <Font name="System Bold" size="24" />
+            </font>
+        </Label>
+        <Label fx:id="lblData" textFill="GRAY" />
+    </VBox>
+
+    <!-- Cartões com os números do dia -->
+    <HBox spacing="15">
+        <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+            <padding>
+                <Insets top="18" right="20" bottom="18" left="20" />
+            </padding>
+            <Label text="Animais cadastrados" textFill="GRAY" />
+            <Label fx:id="lblTotalPets" text="-" textFill="#13352c">
+                <font>
+                    <Font name="System Bold" size="30" />
+                </font>
+            </Label>
+        </VBox>
+        <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+            <padding>
+                <Insets top="18" right="20" bottom="18" left="20" />
+            </padding>
+            <Label text="Tutores" textFill="GRAY" />
+            <Label fx:id="lblTotalTutores" text="-" textFill="#13352c">
+                <font>
+                    <Font name="System Bold" size="30" />
+                </font>
+            </Label>
+        </VBox>
+        <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+            <padding>
+                <Insets top="18" right="20" bottom="18" left="20" />
+            </padding>
+            <Label text="Vacinas próximas" textFill="GRAY" />
+            <Label fx:id="lblDosesProximas" text="-" textFill="#d98a1c">
+                <font>
+                    <Font name="System Bold" size="30" />
+                </font>
+            </Label>
+        </VBox>
+        <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+            <padding>
+                <Insets top="18" right="20" bottom="18" left="20" />
+            </padding>
+            <Label text="Vacinas vencidas" textFill="GRAY" />
+            <Label fx:id="lblDosesVencidas" text="-" textFill="#b4363f">
+                <font>
+                    <Font name="System Bold" size="30" />
+                </font>
+            </Label>
+        </VBox>
+    </HBox>
+
+    <Label fx:id="lblMensagem" textFill="GRAY" />
+
+    <!-- Próximas vacinações (esquerda) e agenda de hoje (direita) -->
+    <HBox spacing="20" VBox.vgrow="ALWAYS">
+        <VBox spacing="10" HBox.hgrow="ALWAYS">
+            <Label text="Próximas vacinações" textFill="#13352c">
+                <font>
+                    <Font name="System Bold" size="16" />
+                </font>
+            </Label>
+            <TableView fx:id="tabelaVacinas" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colAnimal" text="Animal" prefWidth="140" />
+                    <TableColumn fx:id="colVacina" text="Vacina" prefWidth="140" />
+                    <TableColumn fx:id="colProximaDose" text="Próxima dose" prefWidth="110" />
+                    <TableColumn fx:id="colSituacao" text="Situação" prefWidth="140" />
+                </columns>
+            </TableView>
+        </VBox>
+
+        <VBox spacing="10" prefWidth="320">
+            <Label text="Agenda de hoje" textFill="#13352c">
+                <font>
+                    <Font name="System Bold" size="16" />
+                </font>
+            </Label>
+            <ListView fx:id="listaAgenda" VBox.vgrow="ALWAYS" />
+        </VBox>
+    </HBox>
+</VBox>
