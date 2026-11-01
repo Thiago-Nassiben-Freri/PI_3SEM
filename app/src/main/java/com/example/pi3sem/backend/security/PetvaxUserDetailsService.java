@@ -30,6 +30,7 @@ public class PetvaxUserDetailsService implements UserDetailsService {
     @Override
     public UsuarioAutenticado loadUserByUsername(String login) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByLogin(login)
+                .or(() -> usuarioRepository.findByEmail(login))
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + login));
         List<String> papeis = new ArrayList<>();
         if (adminRepository.existsById(usuario.getIdUsuario())) {
@@ -41,4 +42,4 @@ public class PetvaxUserDetailsService implements UserDetailsService {
         return new UsuarioAutenticado(usuario.getIdUsuario(), usuario.getNome(), usuario.getLogin(),
                 usuario.getEmail(), usuario.getSenha(), Boolean.TRUE.equals(usuario.getAtivo()), papeis);
     }
-}
+    }
