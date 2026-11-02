@@ -19,7 +19,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 
-// Tela Notificações: lista os lembretes e envia pelo WhatsApp (link wa.me aberto no navegador)
+// Tela Notificações: lista os lembretes e envia pelo WhatsApp
+// (envio automático pela WhatsApp Cloud API ou, no modo link, abrindo o WhatsApp Web)
 public class NotificacoesController {
 
     private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -159,15 +160,23 @@ public class NotificacoesController {
                     ApiService.put("/notificacoes/" + notificacao.getIdNotificacao(), dados);
                 }
 
-                // 2. A API marca como enviada e devolve o link do WhatsApp
+                // 2. A API envia (ou prepara) a mensagem e marca a notificação como enviada
                 String json = ApiService.post("/notificacoes/" + notificacao.getIdNotificacao() + "/enviar", null);
                 EnvioNotificacao envio = ApiService.getMapper().readValue(json, EnvioNotificacao.class);
 
-                // 3. Abre o link no navegador: o WhatsApp Web abre com a mensagem pronta
-                Desktop.getDesktop().browse(new URI(envio.getLink()));
+                // 3. Modo "api": a mensagem já saiu pela WhatsApp Cloud API e não vem link.
+                //    Modo "link": abre o WhatsApp Web com a mensagem pronta para o veterinário enviar.
+                boolean temLink = envio.getLink() != null && !envio.getLink().isBlank();
+                if (temLink) {
+                    Desktop.getDesktop().browse(new URI(envio.getLink()));
+                }
 
                 Platform.runLater(() -> {
-                    mostrarSucesso("WhatsApp aberto. Confira a mensagem e clique em enviar.");
+                    if (temLink) {
+                        mostrarSucesso("WhatsApp aberto. Confira a mensagem e clique em enviar.");
+                    } else {
+                        mostrarSucesso("Mensagem enviada pelo WhatsApp.");
+                    }
                     carregarNotificacoes();
                 });
             } catch (Exception e) {
