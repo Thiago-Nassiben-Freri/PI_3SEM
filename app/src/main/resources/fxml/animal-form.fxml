@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.pi3sem.desktop.controller.AnimalFormController"
+      spacing="8" prefWidth="420" style="-fx-background-color: white;">
+    <padding>
+        <Insets top="25" right="25" bottom="25" left="25" />
+    </padding>
+
+    <Label fx:id="lblTitulo" text="Novo animal" textFill="#13352c">
+        <font>
+            <Font name="System Bold" size="20" />
+        </font>
+        <VBox.margin>
+            <Insets bottom="10" />
+        </VBox.margin>
+    </Label>
+
+    <Label text="Nome" />
+    <TextField fx:id="txtNome" prefHeight="35" />
+
+    <!-- Sexo e data de nascimento lado a lado, para o formulário não ficar muito alto -->
+    <HBox spacing="10">
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Sexo" />
+            <ComboBox fx:id="cmbSexo" prefHeight="35" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Data de nascimento" />
+            <DatePicker fx:id="dtNascimento" prefHeight="35" maxWidth="Infinity" />
+        </VBox>
+    </HBox>
+
+    <Label text="Peso em kg (ex.: 12,5)" />
+    <TextField fx:id="txtPeso" prefHeight="35" />
+
+    <Label text="Observações (opcional)" />
+    <TextField fx:id="txtObservacoes" prefHeight="35" />
+
+    <Label text="Tutor" />
+    <ComboBox fx:id="cmbTutor" prefHeight="35" maxWidth="Infinity" />
+
+    <!-- A raça depende da espécie, por isso ficam juntas -->
+    <HBox spacing="10">
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Espécie" />
+            <ComboBox fx:id="cmbEspecie" prefHeight="35" maxWidth="Infinity" />
+        </VBox>
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Raça" />
+            <ComboBox fx:id="cmbRaca" prefHeight="35" maxWidth="Infinity" />
+        </VBox>
+    </HBox>
+
+    <Label fx:id="lblMensagem" textFill="RED" wrapText="true" />
+
+    <!-- Botões alinhados à direita -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancelar" onAction="#cancelar" prefHeight="35" />
+        <Button fx:id="btnSalvar" text="Salvar" onAction="#salvar" prefHeight="35" textFill="WHITE"
+                style="-fx-background-color: #12805d;">
+            <font>
+                <Font name="System Bold" size="13" />
+            </font>
+        </Button>
+    </HBox>
+</VBox>
