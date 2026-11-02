@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.pi3sem.desktop.controller.VacinasController"
+      spacing="15" style="-fx-background-color: white;">
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30" />
+    </padding>
+
+    <!-- Título da tela -->
+    <Label text="Vacinas" textFill="#13352c">
+        <font>
+            <Font name="System Bold" size="24" />
+        </font>
+    </Label>
+
+    <!-- Filtros à esquerda, botões de ação à direita -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Próximas" onAction="#proximas" prefHeight="35" />
+        <Button text="Vencidas" onAction="#vencidas" prefHeight="35" />
+        <Label fx:id="lblFiltro" textFill="#13352c" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Catálogo de vacinas" onAction="#abrirCatalogo" prefHeight="35" />
+        <Button text="Registrar aplicação" onAction="#registrarAplicacao" prefHeight="35" textFill="WHITE"
+                style="-fx-background-color: #12805d;">
+            <font>
+                <Font name="System Bold" size="13" />
+            </font>
+        </Button>
+    </HBox>
+
+    <!-- Tabela ocupa o espaço que sobrar -->
+    <TableView fx:id="tabela" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colAnimal" text="Animal" prefWidth="130" />
+            <TableColumn fx:id="colTutor" text="Tutor" prefWidth="160" />
+            <TableColumn fx:id="colVacina" text="Vacina" prefWidth="150" />
+            <TableColumn fx:id="colDose" text="Dose" prefWidth="60" />
+            <TableColumn fx:id="colUltima" text="Última aplicação" prefWidth="130" />
+            <TableColumn fx:id="colProxima" text="Próxima dose" prefWidth="120" />
+            <TableColumn fx:id="colSituacao" text="Situação" prefWidth="130" />
+        </columns>
+    </TableView>
+
+    <Label fx:id="lblMensagem" textFill="RED" />
+</VBox>
