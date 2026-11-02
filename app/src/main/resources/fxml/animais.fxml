@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.pi3sem.desktop.controller.AnimaisController"
+      spacing="15" style="-fx-background-color: white;">
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30" />
+    </padding>
+
+    <!-- Título da tela -->
+    <Label text="Animais" textFill="#13352c">
+        <font>
+            <Font name="System Bold" size="24" />
+        </font>
+    </Label>
+
+    <!-- Busca e filtro à esquerda, botão principal à direita -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="txtBusca" promptText="Buscar por nome" prefWidth="260" prefHeight="35"
+                   onAction="#buscar" />
+        <ComboBox fx:id="cmbEspecie" prefWidth="180" prefHeight="35" />
+        <Button text="Buscar" onAction="#buscar" prefHeight="35" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button text="Novo" onAction="#novo" prefHeight="35" textFill="WHITE"
+                style="-fx-background-color: #12805d;">
+            <font>
+                <Font name="System Bold" size="13" />
+            </font>
+        </Button>
+    </HBox>
+
+    <!-- Tabela ocupa o espaço que sobrar -->
+    <TableView fx:id="tabela" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colNome" text="Nome" prefWidth="180" />
+            <TableColumn fx:id="colEspecie" text="Espécie" prefWidth="120" />
+            <TableColumn fx:id="colRaca" text="Raça" prefWidth="160" />
+            <TableColumn fx:id="colIdade" text="Idade" prefWidth="100" />
+            <TableColumn fx:id="colTutor" text="Tutor" prefWidth="220" />
+        </columns>
+    </TableView>
+
+    <!-- Ações sobre o item selecionado -->
+    <HBox spacing="10">
+        <Button text="Detalhes" onAction="#detalhes" prefHeight="35" />
+        <Button text="Editar" onAction="#editar" prefHeight="35" />
+        <Button text="Excluir" onAction="#excluir" prefHeight="35" />
+    </HBox>
+
+    <Label fx:id="lblMensagem" textFill="RED" />
+</VBox>
