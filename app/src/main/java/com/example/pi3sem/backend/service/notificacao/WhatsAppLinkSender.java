@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import com.example.pi3sem.backend.model.CanalNotificacao;
@@ -15,10 +16,11 @@ import com.example.pi3sem.backend.repository.TelefoneRepository;
  * Envio por WhatsApp via link "wa.me" (gratuito, sem API paga - RES03).
  * O backend monta o link com o telefone do tutor e a mensagem; o desktop abre o link
  * no navegador e o veterinário confirma o envio no WhatsApp Web/aplicativo.
- * Para envio automático no futuro, troque esta classe por uma integração com a
- * WhatsApp Cloud API mantendo a interface NotificacaoSender.
+ * É o modo padrão. Para envio automático pela WhatsApp Cloud API, configure
+ * petvax.whatsapp.modo=api (variável WHATSAPP_MODO); aí quem envia é o WhatsAppCloudApiSender.
  */
 @Component
+@ConditionalOnProperty(name = "petvax.whatsapp.modo", havingValue = "link", matchIfMissing = true)
 public class WhatsAppLinkSender implements NotificacaoSender {
 
     private final TelefoneRepository telefoneRepository;

@@ -1,11 +1,13 @@
 package com.example.pi3sem.desktop.controller;
 
-import com.example.pi3sem.desktop.model.UsuarioLogado;
+import java.io.IOException;
+
 import com.example.pi3sem.desktop.service.ApiService;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -74,8 +76,8 @@ public class LoginController {
         // Platform.runLater volta para a thread da tela para poder alterar os componentes.
         new Thread(() -> {
             try {
-                UsuarioLogado usuario = ApiService.login(email, senha);
-                Platform.runLater(() -> loginRealizado(usuario));
+                ApiService.login(email, senha);
+                Platform.runLater(() -> abrirSistema());
             } catch (Exception e) {
                 Platform.runLater(() -> {
                     lblMensagem.setTextFill(Color.RED);
@@ -86,15 +88,16 @@ public class LoginController {
         }).start();
     }
 
-    private void loginRealizado(UsuarioLogado usuario) {
-        lblMensagem.setText("");
-        btnEntrar.setDisable(false);
-
-        // TODO: quando a tela de Visão geral existir, abrir ela aqui
-        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
-        alerta.setTitle("PetVax");
-        alerta.setHeaderText(null);
-        alerta.setContentText("Bem-vindo(a), " + usuario.getNome() + "!");
-        alerta.showAndWait();
+    // Troca a tela de login pela estrutura principal (menu lateral + telas)
+    private void abrirSistema() {
+        try {
+            Parent principal = FXMLLoader.load(getClass().getResource("/fxml/principal.fxml"));
+            btnEntrar.getScene().setRoot(principal);
+        } catch (IOException e) {
+            e.printStackTrace();
+            lblMensagem.setTextFill(Color.RED);
+            lblMensagem.setText("Erro ao abrir o sistema. Veja o terminal.");
+            btnEntrar.setDisable(false);
+        }
     }
 }
