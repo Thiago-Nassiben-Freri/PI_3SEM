@@ -23,6 +23,9 @@ import javafx.stage.Stage;
 
 // Tela Agenda: lista os agendamentos do dia escolhido
 public class AgendaController {
+    // Tamanho padrão da janela de cadastro, para todos os campos aparecerem sem cortar
+    private static final double LARGURA_FORM = 520;
+    private static final double ALTURA_FORM = 650;
 
     private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm");
     private static final DateTimeFormatter FORMATO_API = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
@@ -188,7 +191,7 @@ public class AgendaController {
             Stage janela = new Stage();
             janela.setTitle(agendamento == null ? "Novo agendamento" : "Editar agendamento");
             janela.initModality(Modality.APPLICATION_MODAL);
-            janela.setScene(new Scene(loader.load()));
+            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             AgendamentoFormController formulario = loader.getController();
             formulario.setAgendamento(agendamento);
