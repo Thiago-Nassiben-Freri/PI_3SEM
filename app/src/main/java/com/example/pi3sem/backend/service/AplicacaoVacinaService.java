@@ -187,8 +187,8 @@ public class AplicacaoVacinaService {
         if (aplicacao.getDataAplicacao() == null) {
             throw new IllegalArgumentException("A data de aplicação da vacina é obrigatória");
         }
-        if (aplicacao.getDataAplicacao().isAfter(LocalDateTime.now().plusMinutes(5))) {
-            throw new IllegalArgumentException("A data de aplicação da vacina não pode estar no futuro");
+        if (aplicacao.getDataAplicacao().isBefore(LocalDateTime.now().plusMinutes(5))) {
+            throw new IllegalArgumentException("A data de aplicação da vacina deve estar no futuro");
         }
         if (aplicacao.getNumeroDose() == null || aplicacao.getNumeroDose() <= 0) {
             throw new IllegalArgumentException("O número da dose da aplicação da vacina é obrigatório");

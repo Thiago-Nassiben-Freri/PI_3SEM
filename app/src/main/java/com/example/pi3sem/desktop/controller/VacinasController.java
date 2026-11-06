@@ -19,6 +19,9 @@ import javafx.stage.Stage;
 // Tela de vacinas: lista as próximas doses ou as vencidas, e abre
 // o formulário de aplicação e o catálogo de vacinas.
 public class VacinasController {
+    // Tamanho padrão da janela de cadastro, para todos os campos aparecerem sem cortar
+    private static final double LARGURA_FORM = 520;
+    private static final double ALTURA_FORM = 650;
 
     @FXML
     private Label lblFiltro;
@@ -145,7 +148,12 @@ public class VacinasController {
             Stage janela = new Stage();
             janela.setTitle(titulo);
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
-            janela.setScene(new Scene(loader.load()));
+            // Só os formulários de cadastro ganham o tamanho maior; o catálogo mantém o tamanho dele
+            if (arquivoFxml.endsWith("-form.fxml")) {
+                janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
+            } else {
+                janela.setScene(new Scene(loader.load()));
+            }
 
             janela.showAndWait();
             carregarDoses();
