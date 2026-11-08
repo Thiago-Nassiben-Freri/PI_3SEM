@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 
 // Pop-up com a lista de vacinas do catálogo: novo, editar e excluir.
 public class VacinaCatalogoController {
+    // Tamanho padrão da janela de cadastro, para todos os campos aparecerem sem cortar
+    private static final double LARGURA_FORM = 520;
+    private static final double ALTURA_FORM = 650;
 
     @FXML
     private TableView<Vacina> tabela;
@@ -121,7 +124,7 @@ public class VacinaCatalogoController {
                 janela.setTitle("Editar vacina");
             }
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
-            janela.setScene(new Scene(loader.load()));
+            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             VacinaFormController form = loader.getController();
             form.setVacina(vacina);

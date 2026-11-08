@@ -27,6 +27,9 @@ import javafx.stage.Stage;
 
 // Tela de listagem de tutores: busca, novo, editar e excluir.
 public class TutoresController {
+    // Tamanho padrão da janela de cadastro, para todos os campos aparecerem sem cortar
+    private static final double LARGURA_FORM = 520;
+    private static final double ALTURA_FORM = 650;
 
     @FXML
     private TextField txtBusca;
@@ -160,7 +163,7 @@ public class TutoresController {
                 janela.setTitle("Editar tutor");
             }
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
-            janela.setScene(new Scene(loader.load()));
+            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             TutorFormController form = loader.getController();
             form.setTutor(tutor);

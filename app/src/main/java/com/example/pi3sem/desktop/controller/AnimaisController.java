@@ -29,6 +29,9 @@ import javafx.stage.Stage;
 // Tela de listagem de animais: busca por nome, filtro de espécie,
 // novo, editar, excluir e detalhes (prontuário).
 public class AnimaisController {
+    // Tamanho padrão da janela de cadastro, para todos os campos aparecerem sem cortar
+    private static final double LARGURA_FORM = 520;
+    private static final double ALTURA_FORM = 650;
 
     @FXML
     private TextField txtBusca;
@@ -226,7 +229,7 @@ public class AnimaisController {
                 janela.setTitle("Editar animal");
             }
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
-            janela.setScene(new Scene(loader.load()));
+            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             AnimalFormController form = loader.getController();
             form.setPet(pet);
