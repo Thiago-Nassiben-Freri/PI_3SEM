@@ -1,11 +1,15 @@
 package com.example.pi3sem.desktop.controller;
 
+import java.util.Arrays;
+
+import com.example.pi3sem.desktop.model.Especie;
 import com.example.pi3sem.desktop.model.Vacina;
 import com.example.pi3sem.desktop.service.ApiService;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -20,6 +24,8 @@ public class VacinaFormController {
     @FXML
     private TextField txtTipo;
     @FXML
+    private ComboBox<Especie> cmbEspecie;
+    @FXML
     private TextField txtDosagem;
     @FXML
     private TextField txtPeriodicidade;
@@ -32,6 +38,11 @@ public class VacinaFormController {
 
     // null = novo cadastro; preenchido = edição
     private Vacina vacina;
+
+    @FXML
+    private void initialize() {
+        carregarEspecies();
+    }
 
     // Chamado pelo catálogo logo depois de carregar o formulário
     public void setVacina(Vacina vacina) {
@@ -48,11 +59,17 @@ public class VacinaFormController {
             txtPeriodicidade.setText(String.valueOf(vacina.getPeriodicidadeDias()));
         }
         txtFabricante.setText(vacina.getFabricante());
+        carregarEspeciesVinculadas();
     }
 
     @FXML
     private void salvar() {
         lblMensagem.setText("");
+
+        if (cmbEspecie.getValue() == null) {
+            lblMensagem.setText("Selecione uma espécie para a vacina.");
+            return;
+        }
 
         // Se a periodicidade ficar vazia, a API avisa que é obrigatória
         Integer periodicidade = null;
@@ -81,11 +98,16 @@ public class VacinaFormController {
 
         new Thread(() -> {
             try {
+                Vacina vacinaSalva;
                 if (vacina == null) {
-                    ApiService.post("/vacinas", dados);
+                    String resposta = ApiService.post("/vacinas", dados);
+                    vacinaSalva = ApiService.getMapper().readValue(resposta, Vacina.class);
                 } else {
-                    ApiService.put("/vacinas/" + vacina.getIdVacina(), dados);
+                    String resposta = ApiService.put("/vacinas/" + vacina.getIdVacina(), dados);
+                    vacinaSalva = ApiService.getMapper().readValue(resposta, Vacina.class);
                 }
+
+                vincularEspecieSeNecessario(vacinaSalva.getIdVacina(), cmbEspecie.getValue().getIdEspecie());
                 Platform.runLater(() -> fecharJanela());
             } catch (Exception e) {
                 Platform.runLater(() -> {
@@ -99,6 +121,57 @@ public class VacinaFormController {
     @FXML
     private void cancelar() {
         fecharJanela();
+    }
+
+    private void carregarEspecies() {
+        new Thread(() -> {
+            try {
+                String json = ApiService.get("/especies");
+                Especie[] especies = ApiService.getMapper().readValue(json, Especie[].class);
+                Platform.runLater(() -> {
+                    cmbEspecie.getItems().setAll(especies);
+                    if (vacina != null) {
+                        carregarEspeciesVinculadas();
+                    }
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> lblMensagem.setText("Não foi possível carregar as espécies."));
+            }
+        }).start();
+    }
+
+    private void carregarEspeciesVinculadas() {
+        if (vacina == null) {
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                String json = ApiService.get("/vacinas/" + vacina.getIdVacina() + "/especies");
+                Especie[] especies = ApiService.getMapper().readValue(json, Especie[].class);
+                Platform.runLater(() -> {
+                    if (especies.length > 0) {
+                        cmbEspecie.setValue(Arrays.stream(cmbEspecie.getItems().toArray(new Especie[0]))
+                                .filter(e -> e.getIdEspecie().equals(especies[0].getIdEspecie()))
+                                .findFirst()
+                                .orElse(null));
+                    }
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> lblMensagem.setText("Não foi possível carregar a espécie vinculada."));
+            }
+        }).start();
+    }
+
+    private void vincularEspecieSeNecessario(Integer idVacina, Integer idEspecie) throws Exception {
+        String json = ApiService.get("/vacinas/" + idVacina + "/especies");
+        Especie[] especies = ApiService.getMapper().readValue(json, Especie[].class);
+        boolean jaVinculada = Arrays.stream(especies)
+                .anyMatch(especie -> especie.getIdEspecie().equals(idEspecie));
+
+        if (!jaVinculada) {
+            ApiService.post("/vacinas/" + idVacina + "/especies/" + idEspecie, null);
+        }
     }
 
     private void fecharJanela() {
