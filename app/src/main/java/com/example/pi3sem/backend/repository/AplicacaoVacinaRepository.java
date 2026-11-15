@@ -28,12 +28,14 @@ public interface AplicacaoVacinaRepository extends JpaRepository<AplicacaoVacina
             WHERE a.dataAplicacao BETWEEN :inicio AND :fim
               AND (:petId IS NULL OR a.pet.idPet = :petId)
               AND (:vacinaId IS NULL OR a.vacina.idVacina = :vacinaId)
+              AND (:veterinarioId IS NULL OR a.veterinario.id = :veterinarioId)
             ORDER BY a.dataAplicacao DESC
             """)
     List<AplicacaoVacina> filtrar(@Param("inicio") LocalDateTime inicio,
                                   @Param("fim") LocalDateTime fim,
                                   @Param("petId") Integer petId,
-                                  @Param("vacinaId") Integer vacinaId);
+                                  @Param("vacinaId") Integer vacinaId,
+                                  @Param("veterinarioId") Integer veterinarioId);
 
     @Query("""
             SELECT a FROM AplicacaoVacina a

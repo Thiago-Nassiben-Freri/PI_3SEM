@@ -66,8 +66,9 @@ public class VacinaFormController {
     private void salvar() {
         lblMensagem.setText("");
 
-        if (cmbEspecie.getValue() == null) {
-            lblMensagem.setText("Selecione uma espécie para a vacina.");
+        Especie especieSelecionada = cmbEspecie.getValue();
+        if (especieSelecionada == null || especieSelecionada.getIdEspecie() == null) {
+            lblMensagem.setText("Selecione uma espécie válida para a vacina.");
             return;
         }
 
@@ -97,8 +98,8 @@ public class VacinaFormController {
         btnSalvar.setDisable(true); // evita clicar duas vezes
 
         new Thread(() -> {
+            Vacina vacinaSalva = null;
             try {
-                Vacina vacinaSalva;
                 if (vacina == null) {
                     String resposta = ApiService.post("/vacinas", dados);
                     vacinaSalva = ApiService.getMapper().readValue(resposta, Vacina.class);
@@ -107,9 +108,17 @@ public class VacinaFormController {
                     vacinaSalva = ApiService.getMapper().readValue(resposta, Vacina.class);
                 }
 
-                vincularEspecieSeNecessario(vacinaSalva.getIdVacina(), cmbEspecie.getValue().getIdEspecie());
+                vincularEspecieSeNecessario(vacinaSalva.getIdVacina(), especieSelecionada.getIdEspecie());
                 Platform.runLater(() -> fecharJanela());
             } catch (Exception e) {
+                if (vacinaSalva != null && vacina == null) {
+                    try {
+                        ApiService.delete("/vacinas/" + vacinaSalva.getIdVacina());
+                    } catch (Exception rollbackException) {
+                        // ignora para manter a mensagem original do erro principal
+                    }
+                }
+
                 Platform.runLater(() -> {
                     lblMensagem.setText(e.getMessage());
                     btnSalvar.setDisable(false);

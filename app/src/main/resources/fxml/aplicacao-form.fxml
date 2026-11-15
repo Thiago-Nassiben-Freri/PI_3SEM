@@ -33,6 +33,9 @@
     <Label text="Vacina" />
     <ComboBox fx:id="cmbVacina" prefHeight="35" maxWidth="Infinity" />
 
+    <Label text="Veterinário" />
+    <ComboBox fx:id="cmbVeterinario" prefHeight="35" maxWidth="Infinity" promptText="Escolha o veterinário" />
+
     <!-- Data e dose lado a lado, para o formulário não ficar muito alto -->
     <HBox spacing="10">
         <VBox spacing="8" HBox.hgrow="ALWAYS">

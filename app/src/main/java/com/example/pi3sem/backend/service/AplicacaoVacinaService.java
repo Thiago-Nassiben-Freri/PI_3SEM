@@ -48,12 +48,17 @@ public class AplicacaoVacinaService {
     }
 
     public List<AplicacaoVacina> filtrar(Integer petId, Integer vacinaId, LocalDate inicio, LocalDate fim) {
+        return filtrar(petId, vacinaId, null, inicio, fim);
+    }
+
+    public List<AplicacaoVacina> filtrar(Integer petId, Integer vacinaId, Integer veterinarioId,
+            LocalDate inicio, LocalDate fim) {
         LocalDate de = inicio != null ? inicio : INICIO_PADRAO;
         LocalDate ate = fim != null ? fim : FIM_PADRAO;
         if (de.isAfter(ate)) {
             throw new IllegalArgumentException("A data inicial não pode ser posterior à data final");
         }
-        return repository.filtrar(de.atStartOfDay(), ate.atTime(LocalTime.MAX), petId, vacinaId);
+        return repository.filtrar(de.atStartOfDay(), ate.atTime(LocalTime.MAX), petId, vacinaId, veterinarioId);
     }
 
     // Histórico do pet, mais recente primeiro

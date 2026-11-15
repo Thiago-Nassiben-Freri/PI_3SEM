@@ -25,6 +25,8 @@ public class AplicacaoFormController {
     @FXML
     private ComboBox<Vacina> cmbVacina;
     @FXML
+    private ComboBox<Veterinario> cmbVeterinario;
+    @FXML
     private DatePicker dtAplicacao;
     @FXML
     private TextField txtDose;
@@ -44,6 +46,35 @@ public class AplicacaoFormController {
         dtAplicacao.setValue(LocalDate.now()); // a maioria das aplicações é registrada no mesmo dia
         carregarAnimais();
         carregarVacinas();
+        carregarVeterinarios();
+    }
+
+    private void carregarVeterinarios() {
+        new Thread(() -> {
+            try {
+                String json = ApiService.get("/veterinarios");
+                Veterinario[] veterinarios = ApiService.getMapper().readValue(json, Veterinario[].class);
+                Platform.runLater(() -> {
+                    cmbVeterinario.getItems().setAll(veterinarios);
+                    if (veterinarios != null && veterinarios.length > 0) {
+                        Integer idUsuarioLogado = ApiService.getUsuarioLogado() != null
+                                ? ApiService.getUsuarioLogado().getIdUsuario()
+                                : null;
+                        for (Veterinario veterinario : veterinarios) {
+                            if (veterinario.getId() != null && veterinario.getId().equals(idUsuarioLogado)) {
+                                cmbVeterinario.setValue(veterinario);
+                                return;
+                            }
+                        }
+                        cmbVeterinario.setPromptText("Escolha o veterinário");
+                    } else {
+                        cmbVeterinario.setPromptText("Nenhum veterinário cadastrado");
+                    }
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> lblMensagem.setText(e.getMessage()));
+            }
+        }).start();
     }
 
     private void carregarAnimais() {
@@ -76,6 +107,7 @@ public class AplicacaoFormController {
 
         Pet petEscolhido = cmbPet.getValue();
         Vacina vacinaEscolhida = cmbVacina.getValue();
+        Veterinario veterinarioEscolhido = cmbVeterinario.getValue();
         LocalDate dataAplicacao = dtAplicacao.getValue();
 
         if (petEscolhido == null) {
@@ -84,6 +116,10 @@ public class AplicacaoFormController {
         }
         if (vacinaEscolhida == null) {
             lblMensagem.setText("Selecione a vacina.");
+            return;
+        }
+        if (veterinarioEscolhido == null) {
+            lblMensagem.setText("Selecione o veterinário.");
             return;
         }
         if (dataAplicacao == null) {
@@ -109,9 +145,8 @@ public class AplicacaoFormController {
         Vacina vacinaComId = new Vacina();
         vacinaComId.setIdVacina(vacinaEscolhida.getIdVacina());
 
-        // O veterinário é o usuário que fez login
         Veterinario veterinario = new Veterinario();
-        veterinario.setId(ApiService.getUsuarioLogado().getIdUsuario());
+        veterinario.setId(veterinarioEscolhido.getId());
 
         // Monta a aplicação só com os dados da tela
         AplicacaoVacina dados = new AplicacaoVacina();

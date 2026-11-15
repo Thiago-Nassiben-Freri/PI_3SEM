@@ -34,6 +34,9 @@
     <Label text="Vacina" />
     <ComboBox fx:id="cbVacina" promptText="Escolha o animal primeiro" prefHeight="35" maxWidth="Infinity" />
 
+    <Label text="Veterinário" />
+    <ComboBox fx:id="cbVeterinario" promptText="Escolha o veterinário" prefHeight="35" maxWidth="Infinity" />
+
     <Label text="Data" />
     <DatePicker fx:id="dpData" prefHeight="35" maxWidth="Infinity" />
 

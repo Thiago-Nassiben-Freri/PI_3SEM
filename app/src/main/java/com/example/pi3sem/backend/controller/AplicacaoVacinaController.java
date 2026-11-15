@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.pi3sem.backend.dto.ProximaDoseDTO;
 import com.example.pi3sem.backend.model.AplicacaoVacina;
+import com.example.pi3sem.backend.security.UsuarioAutenticado;
 import com.example.pi3sem.backend.service.AplicacaoVacinaService;
 
 @RestController
@@ -33,9 +35,25 @@ public class AplicacaoVacinaController {
     public List<AplicacaoVacina> listar(
             @RequestParam(required = false) Integer petId,
             @RequestParam(required = false) Integer vacinaId,
+            @RequestParam(required = false) Integer veterinarioId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
-        return service.filtrar(petId, vacinaId, inicio, fim);
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim,
+            @AuthenticationPrincipal UsuarioAutenticado usuario) {
+        Integer veterinarioIdVisivel = aplicarVisibilidadePorPerfil(veterinarioId, usuario);
+        return service.filtrar(petId, vacinaId, veterinarioIdVisivel, inicio, fim);
+    }
+
+    static Integer aplicarVisibilidadePorPerfil(Integer veterinarioId, UsuarioAutenticado usuario) {
+        if (usuario == null) {
+            return veterinarioId;
+        }
+        if (usuario.isAdmin()) {
+            return veterinarioId;
+        }
+        if (veterinarioId == null || !veterinarioId.equals(usuario.getIdUsuario())) {
+            return usuario.getIdUsuario();
+        }
+        return veterinarioId;
     }
 
     @GetMapping("/proximas-doses")

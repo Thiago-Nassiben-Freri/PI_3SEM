@@ -32,8 +32,14 @@ public class GlobalExceptionHandler {
     // 409 - violação de constraint no banco (unique, FK em uso, not null)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErroResposta> tratarIntegridade(DataIntegrityViolationException ex) {
-        return resposta(HttpStatus.CONFLICT,
-                "Operação não permitida: registro duplicado ou vinculado a outros registros");
+        Throwable causa = ex.getMostSpecificCause() != null ? ex.getMostSpecificCause() : ex;
+        String mensagem = causa.getMessage();
+
+        if (mensagem == null || mensagem.isBlank()) {
+            mensagem = "Operação não permitida: registro duplicado ou vinculado a outros registros";
+        }
+
+        return resposta(HttpStatus.CONFLICT, mensagem);
     }
 
     // 400 - parâmetro de rota/query com tipo errado (ex.: /especies/abc)
