@@ -169,8 +169,23 @@ public class VacinaFormController {
         boolean jaVinculada = Arrays.stream(especies)
                 .anyMatch(especie -> especie.getIdEspecie().equals(idEspecie));
 
-        if (!jaVinculada) {
+        if (jaVinculada) {
+            return;
+        }
+
+        try {
             ApiService.post("/vacinas/" + idVacina + "/especies/" + idEspecie, null);
+        } catch (Exception e) {
+            if (e.getMessage() != null && e.getMessage().toLowerCase().contains("duplicado")) {
+                String jsonAtualizado = ApiService.get("/vacinas/" + idVacina + "/especies");
+                Especie[] especiesAtualizadas = ApiService.getMapper().readValue(jsonAtualizado, Especie[].class);
+                boolean vinculadaMesmoAssim = Arrays.stream(especiesAtualizadas)
+                        .anyMatch(especie -> especie.getIdEspecie().equals(idEspecie));
+                if (vinculadaMesmoAssim) {
+                    return;
+                }
+            }
+            throw e;
         }
     }
 

@@ -61,13 +61,13 @@ public class VacinaEspecieService {
 
     // Indica que a vacina pode ser aplicada na espécie
     public VacinaEspecie vincular(Integer idVacina, Integer idEspecie) {
-        VacinaEspecie vinculo = new VacinaEspecie();
-        vinculo.setVacina(vacinaService.buscarPorId(idVacina));
-        vinculo.setEspecie(especieService.buscarPorId(idEspecie));
-        if (repository.existsByVacina_IdVacinaAndEspecie_IdEspecie(idVacina, idEspecie)) {
-            throw new IllegalArgumentException("Esta vacina já está vinculada a esta espécie");
-        }
-        return repository.save(vinculo);
+        return repository.findByVacina_IdVacinaAndEspecie_IdEspecie(idVacina, idEspecie)
+                .orElseGet(() -> {
+                    VacinaEspecie vinculo = new VacinaEspecie();
+                    vinculo.setVacina(vacinaService.buscarPorId(idVacina));
+                    vinculo.setEspecie(especieService.buscarPorId(idEspecie));
+                    return repository.save(vinculo);
+                });
     }
 
     public void desvincular(Integer idVacina, Integer idEspecie) {

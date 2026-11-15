@@ -6,10 +6,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 
+import com.example.pi3sem.backend.model.Especie;
 import com.example.pi3sem.backend.model.Vacina;
+import com.example.pi3sem.backend.model.VacinaEspecie;
 import com.example.pi3sem.backend.repository.VacinaEspecieRepository;
 import com.example.pi3sem.backend.repository.VacinaRepository;
 
@@ -65,5 +68,32 @@ class VacinaServiceTest {
         Vacina atualizado = vacinaService.atualizar(7, vacina);
 
         assertThat(atualizado.getFabricante()).isEqualTo("Fabricante atualizado");
+    }
+
+    @Test
+    void deveReutilizarVinculoExistenteEntreVacinaEEspecie() {
+        VacinaEspecieRepository vacinaEspecieRepository = mock(VacinaEspecieRepository.class);
+        VacinaService vacinaService = mock(VacinaService.class);
+        EspecieService especieService = mock(EspecieService.class);
+        VacinaEspecieService vacinaEspecieService = new VacinaEspecieService(vacinaEspecieRepository, vacinaService, especieService);
+
+        Vacina vacina = new Vacina();
+        vacina.setIdVacina(10);
+
+        Especie especie = new Especie();
+        especie.setIdEspecie(2);
+
+        VacinaEspecie vinculoExistente = new VacinaEspecie();
+        vinculoExistente.setVacina(vacina);
+        vinculoExistente.setEspecie(especie);
+
+        when(vacinaService.buscarPorId(10)).thenReturn(vacina);
+        when(especieService.buscarPorId(2)).thenReturn(especie);
+        when(vacinaEspecieRepository.findByVacina_IdVacinaAndEspecie_IdEspecie(10, 2))
+            .thenReturn(Optional.of(vinculoExistente));
+
+        VacinaEspecie vinculoSalvo = vacinaEspecieService.vincular(10, 2);
+
+        assertThat(vinculoSalvo).isSameAs(vinculoExistente);
     }
 }
