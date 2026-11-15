@@ -66,6 +66,11 @@
                     style="-fx-background-color: transparent;">
                 <font><Font size="14" /></font>
             </Button>
+                    <Button fx:id="btnRelatorios" text="Relatórios" onAction="#abrirRelatorios"
+                    maxWidth="Infinity" prefHeight="40" alignment="CENTER_LEFT" textFill="WHITE"
+                    style="-fx-background-color: transparent;">
+                <font><Font size="14" /></font>
+            </Button>
 
             <!-- Empurra o usuário e o botão Sair para o rodapé do menu -->
             <Region VBox.vgrow="ALWAYS" />

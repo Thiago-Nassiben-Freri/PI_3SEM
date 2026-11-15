@@ -45,6 +45,9 @@ public class PrincipalController {
     @FXML
     private Button btnNotificacoes;
 
+    @FXML
+    private Button btnRelatorios;
+
     // Roda sozinho quando a tela abre
     @FXML
     public void initialize() {
@@ -83,6 +86,11 @@ public class PrincipalController {
     @FXML
     public void abrirNotificacoes() {
         abrirTela("notificacoes", btnNotificacoes);
+    }
+
+    @FXML
+    public void abrirRelatorios() {
+        abrirTela("relatorios", btnRelatorios);
     }
 
     // Volta para a tela de login
@@ -130,6 +138,7 @@ public class PrincipalController {
         btnAgenda.setStyle(ESTILO_BOTAO);
         btnVacinas.setStyle(ESTILO_BOTAO);
         btnNotificacoes.setStyle(ESTILO_BOTAO);
+        btnRelatorios.setStyle(ESTILO_BOTAO);
         botaoAtivo.setStyle(ESTILO_BOTAO_ATIVO);
     }
 }
