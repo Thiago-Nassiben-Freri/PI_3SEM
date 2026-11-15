@@ -1,6 +1,7 @@
 package com.example.pi3sem.backend.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,12 +33,14 @@ public class VacinaService {
 
     public Vacina salvar(Vacina vacina) {
         validar(vacina);
+        validarDuplicidade(vacina, null);
         return repository.save(vacina);
     }
 
     public Vacina atualizar(Integer id, Vacina dados) {
         Vacina vacina = buscarPorId(id);
         validar(dados);
+        validarDuplicidade(dados, id);
         vacina.setNome(dados.getNome());
         vacina.setTipo(dados.getTipo());
         vacina.setDosagem(dados.getDosagem());
@@ -74,6 +77,32 @@ public class VacinaService {
         if (vacina.getPeriodicidadeDias() <= 0) {
             throw new IllegalArgumentException("A periodicidade da vacina deve ser maior que zero");
         }
+    }
+
+    private void validarDuplicidade(Vacina vacina, Integer idAtual) {
+        String nome = vacina.getNome() == null ? "" : vacina.getNome().trim();
+        String tipo = vacina.getTipo() == null ? "" : vacina.getTipo().trim();
+        String dosagem = vacina.getDosagem() == null ? "" : vacina.getDosagem().trim();
+
+        if (nome.isBlank() || tipo.isBlank() || dosagem.isBlank()) {
+            return;
+        }
+
+        repository.findByNomeContainingIgnoreCase(nome)
+                .stream()
+                .filter(existente -> !Objects.equals(existente.getIdVacina(), idAtual))
+                .filter(existente -> normalizar(existente.getNome()).equals(normalizar(nome)))
+                .filter(existente -> normalizar(existente.getTipo()).equals(normalizar(tipo)))
+                .filter(existente -> normalizar(existente.getDosagem()).equals(normalizar(dosagem)))
+                .findFirst()
+                .ifPresent(existente -> {
+                    throw new IllegalArgumentException(
+                            "Já existe uma vacina cadastrada com este nome, tipo e dosagem");
+                });
+    }
+
+    private String normalizar(String valor) {
+        return valor == null ? "" : valor.trim().replaceAll("\\s+", " ").toLowerCase();
     }
 
 }
