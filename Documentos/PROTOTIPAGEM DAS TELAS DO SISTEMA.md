@@ -104,7 +104,7 @@ Descrição: A tela de tutores organiza os dados de contato dos responsáveis e 
  
 Descrição: A tela de envio de notificação via WhatsApp permite que o médico veterinário revise e envie para o seu próprio WhatsApp um lembrete de vacina ou outra informação importante 
  
-Observação: no sistema, esta tela foi unida à tela de Notificações (seção 10), e o envio pelo WhatsApp não foi implementado nesta entrega.
+Observação: no sistema, esta tela foi unida à tela de Notificações, e o envio pelo WhatsApp não foi implementado nesta entrega.
  
  
 ### **9.1 Componentes principais** 
