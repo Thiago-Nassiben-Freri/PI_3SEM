@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import com.example.pi3sem.desktop.Tema;
 import com.example.pi3sem.desktop.model.Agendamento;
 import com.example.pi3sem.desktop.service.ApiService;
 
@@ -11,7 +12,6 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
@@ -191,7 +191,7 @@ public class AgendaController {
             Stage janela = new Stage();
             janela.setTitle(agendamento == null ? "Novo agendamento" : "Editar agendamento");
             janela.initModality(Modality.APPLICATION_MODAL);
-            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
+            janela.setScene(Tema.criarCena(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             AgendamentoFormController formulario = loader.getController();
             formulario.setAgendamento(agendamento);
@@ -206,6 +206,7 @@ public class AgendaController {
 
     private boolean perguntar(String pergunta) {
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        Tema.configurarDialogo(alerta.getDialogPane());
         alerta.setTitle("PetVax");
         alerta.setHeaderText(null);
         alerta.setContentText(pergunta);

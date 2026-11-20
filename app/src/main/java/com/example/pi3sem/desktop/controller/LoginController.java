@@ -2,6 +2,7 @@ package com.example.pi3sem.desktop.controller;
 
 import java.io.IOException;
 
+import com.example.pi3sem.desktop.Tema;
 import com.example.pi3sem.desktop.service.ApiService;
 
 import javafx.application.Platform;
@@ -13,7 +14,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
+import javafx.scene.control.ToggleButton;
 
 public class LoginController {
 
@@ -34,6 +35,20 @@ public class LoginController {
 
     @FXML
     private Button btnEntrar;
+
+    @FXML
+    private ToggleButton btnModoEscuro;
+
+    @FXML
+    private void initialize() {
+        Tema.configurarBotao(btnModoEscuro);
+    }
+
+    private void mostrarMensagem(String mensagem, boolean erro) {
+        lblMensagem.getStyleClass().removeAll("texto-erro", "texto-secundario");
+        lblMensagem.getStyleClass().add(erro ? "texto-erro" : "texto-secundario");
+        lblMensagem.setText(mensagem);
+    }
 
     // Troca o campo de senha escondida pelo campo de texto normal (e vice-versa)
     @FXML
@@ -63,13 +78,11 @@ public class LoginController {
         }
 
         if (email.isEmpty() || senha.isEmpty()) {
-            lblMensagem.setTextFill(Color.RED);
-            lblMensagem.setText("Preencha o e-mail e a senha.");
+            mostrarMensagem("Preencha o e-mail e a senha.", true);
             return;
         }
 
-        lblMensagem.setTextFill(Color.GRAY);
-        lblMensagem.setText("Entrando...");
+        mostrarMensagem("Entrando...", false);
         btnEntrar.setDisable(true);
 
         // A chamada à API roda em outra thread para a tela não travar enquanto espera.
@@ -80,8 +93,7 @@ public class LoginController {
                 Platform.runLater(() -> abrirSistema());
             } catch (Exception e) {
                 Platform.runLater(() -> {
-                    lblMensagem.setTextFill(Color.RED);
-                    lblMensagem.setText(e.getMessage());
+                    mostrarMensagem(e.getMessage(), true);
                     btnEntrar.setDisable(false);
                 });
             }
@@ -95,8 +107,7 @@ public class LoginController {
             btnEntrar.getScene().setRoot(principal);
         } catch (IOException e) {
             e.printStackTrace();
-            lblMensagem.setTextFill(Color.RED);
-            lblMensagem.setText("Erro ao abrir o sistema. Veja o terminal.");
+            mostrarMensagem("Erro ao abrir o sistema. Veja o terminal.", true);
             btnEntrar.setDisable(false);
         }
     }

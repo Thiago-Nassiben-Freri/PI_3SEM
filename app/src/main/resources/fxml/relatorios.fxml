@@ -15,12 +15,12 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.pi3sem.desktop.controller.RelatoriosController"
-      spacing="15" style="-fx-background-color: white;">
+      spacing="15" style="-fx-background-color: -petvax-fundo;">
     <padding>
         <Insets top="30" right="30" bottom="30" left="30" />
     </padding>
 
-    <Label text="Relatórios de vacinação" textFill="#13352c">
+    <Label text="Relatórios de vacinação" styleClass="texto-titulo">
         <font>
             <Font name="System Bold" size="24" />
         </font>
@@ -36,8 +36,8 @@
         <DatePicker fx:id="dpFim" prefWidth="140" prefHeight="35" />
         <Button text="Limpar datas" onAction="#limparDatas" prefHeight="35" />
         <Region HBox.hgrow="ALWAYS" />
-        <Button fx:id="btnGerar" text="Gerar" onAction="#gerar" prefHeight="35" prefWidth="90" textFill="WHITE"
-                style="-fx-background-color: #12805d;">
+        <Button fx:id="btnGerar" text="Gerar" onAction="#gerar" prefHeight="35" prefWidth="90" styleClass="texto-invertido"
+                style="-fx-background-color: -petvax-acao;">
             <font>
                 <Font name="System Bold" size="13" />
             </font>
@@ -57,9 +57,9 @@
     </TableView>
 
     <HBox alignment="CENTER_LEFT">
-        <Label fx:id="lblMensagem" textFill="RED" wrapText="true" />
+        <Label fx:id="lblMensagem" styleClass="texto-erro" wrapText="true" />
         <Region HBox.hgrow="ALWAYS" />
-        <Label fx:id="lblTotal" textFill="#13352c">
+        <Label fx:id="lblTotal" styleClass="texto-titulo">
             <font>
                 <Font name="System Bold" size="13" />
             </font>

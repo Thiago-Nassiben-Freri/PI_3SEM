@@ -2,13 +2,13 @@ package com.example.pi3sem.desktop.controller;
 
 import java.util.Optional;
 
+import com.example.pi3sem.desktop.Tema;
 import com.example.pi3sem.desktop.model.Vacina;
 import com.example.pi3sem.desktop.service.ApiService;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -74,6 +74,7 @@ public class VacinaCatalogoController {
         }
 
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        Tema.configurarDialogo(alerta.getDialogPane());
         alerta.setTitle("Excluir vacina");
         alerta.setHeaderText("Deseja excluir a vacina " + selecionada.getNome() + "?");
         Optional<ButtonType> resposta = alerta.showAndWait();
@@ -124,7 +125,7 @@ public class VacinaCatalogoController {
                 janela.setTitle("Editar vacina");
             }
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
-            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
+            janela.setScene(Tema.criarCena(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             VacinaFormController form = loader.getController();
             form.setVacina(vacina);

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.example.pi3sem.desktop.Tema;
 import com.example.pi3sem.desktop.model.Telefone;
 import com.example.pi3sem.desktop.model.Tutor;
 import com.example.pi3sem.desktop.service.ApiService;
@@ -14,7 +15,6 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -96,6 +96,7 @@ public class TutoresController {
         }
 
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        Tema.configurarDialogo(alerta.getDialogPane());
         alerta.setTitle("Excluir tutor");
         alerta.setHeaderText("Deseja excluir o tutor " + selecionado.getNome() + "?");
         Optional<ButtonType> resposta = alerta.showAndWait();
@@ -163,7 +164,7 @@ public class TutoresController {
                 janela.setTitle("Editar tutor");
             }
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
-            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
+            janela.setScene(Tema.criarCena(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             TutorFormController form = loader.getController();
             form.setTutor(tutor);

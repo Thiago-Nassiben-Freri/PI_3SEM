@@ -13,66 +13,66 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.pi3sem.desktop.controller.InicioController"
-      spacing="20" style="-fx-background-color: white;">
+      spacing="20" style="-fx-background-color: -petvax-fundo;">
     <padding>
         <Insets top="30" right="30" bottom="30" left="30" />
     </padding>
 
     <!-- Título e data -->
     <VBox spacing="2">
-        <Label text="Início" textFill="#13352c">
+        <Label text="Início" styleClass="texto-titulo">
             <font>
                 <Font name="System Bold" size="24" />
             </font>
         </Label>
-        <Label fx:id="lblData" textFill="GRAY" />
+        <Label fx:id="lblData" styleClass="texto-secundario" />
     </VBox>
 
     <!-- Cartões com os números do dia -->
     <HBox spacing="15">
         <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
-              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+              style="-fx-background-color: -petvax-superficie; -fx-background-radius: 12;">
             <padding>
                 <Insets top="18" right="20" bottom="18" left="20" />
             </padding>
-            <Label text="Animais cadastrados" textFill="GRAY" />
-            <Label fx:id="lblTotalPets" text="-" textFill="#13352c">
+            <Label text="Animais cadastrados" styleClass="texto-secundario" />
+            <Label fx:id="lblTotalPets" text="-" styleClass="texto-titulo">
                 <font>
                     <Font name="System Bold" size="30" />
                 </font>
             </Label>
         </VBox>
         <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
-              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+              style="-fx-background-color: -petvax-superficie; -fx-background-radius: 12;">
             <padding>
                 <Insets top="18" right="20" bottom="18" left="20" />
             </padding>
-            <Label text="Tutores" textFill="GRAY" />
-            <Label fx:id="lblTotalTutores" text="-" textFill="#13352c">
+            <Label text="Tutores" styleClass="texto-secundario" />
+            <Label fx:id="lblTotalTutores" text="-" styleClass="texto-titulo">
                 <font>
                     <Font name="System Bold" size="30" />
                 </font>
             </Label>
         </VBox>
         <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
-              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+              style="-fx-background-color: -petvax-superficie; -fx-background-radius: 12;">
             <padding>
                 <Insets top="18" right="20" bottom="18" left="20" />
             </padding>
-            <Label text="Vacinas próximas" textFill="GRAY" />
-            <Label fx:id="lblDosesProximas" text="-" textFill="#d98a1c">
+            <Label text="Vacinas próximas" styleClass="texto-secundario" />
+            <Label fx:id="lblDosesProximas" text="-" styleClass="texto-aviso">
                 <font>
                     <Font name="System Bold" size="30" />
                 </font>
             </Label>
         </VBox>
         <VBox spacing="5" HBox.hgrow="ALWAYS" maxWidth="Infinity"
-              style="-fx-background-color: #f4f7f5; -fx-background-radius: 12;">
+              style="-fx-background-color: -petvax-superficie; -fx-background-radius: 12;">
             <padding>
                 <Insets top="18" right="20" bottom="18" left="20" />
             </padding>
-            <Label text="Vacinas vencidas" textFill="GRAY" />
-            <Label fx:id="lblDosesVencidas" text="-" textFill="#b4363f">
+            <Label text="Vacinas vencidas" styleClass="texto-secundario" />
+            <Label fx:id="lblDosesVencidas" text="-" styleClass="texto-vencido">
                 <font>
                     <Font name="System Bold" size="30" />
                 </font>
@@ -80,12 +80,12 @@
         </VBox>
     </HBox>
 
-    <Label fx:id="lblMensagem" textFill="GRAY" />
+    <Label fx:id="lblMensagem" />
 
     <!-- Próximas vacinações (esquerda) e agenda de hoje (direita) -->
     <HBox spacing="20" VBox.vgrow="ALWAYS">
         <VBox spacing="10" HBox.hgrow="ALWAYS">
-            <Label text="Próximas vacinações" textFill="#13352c">
+            <Label text="Próximas vacinações" styleClass="texto-titulo">
                 <font>
                     <Font name="System Bold" size="16" />
                 </font>
@@ -101,7 +101,7 @@
         </VBox>
 
         <VBox spacing="10" prefWidth="320">
-            <Label text="Agenda de hoje" textFill="#13352c">
+            <Label text="Agenda de hoje" styleClass="texto-titulo">
                 <font>
                     <Font name="System Bold" size="16" />
                 </font>
