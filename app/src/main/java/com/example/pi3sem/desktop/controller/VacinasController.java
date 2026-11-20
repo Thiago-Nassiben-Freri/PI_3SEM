@@ -2,6 +2,7 @@ package com.example.pi3sem.desktop.controller;
 
 import java.time.format.DateTimeFormatter;
 
+import com.example.pi3sem.desktop.Tema;
 import com.example.pi3sem.desktop.model.ProximaDose;
 import com.example.pi3sem.desktop.service.ApiService;
 
@@ -9,7 +10,6 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -150,9 +150,9 @@ public class VacinasController {
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
             // Só os formulários de cadastro ganham o tamanho maior; o catálogo mantém o tamanho dele
             if (arquivoFxml.endsWith("-form.fxml")) {
-                janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
+                janela.setScene(Tema.criarCena(loader.load(), LARGURA_FORM, ALTURA_FORM));
             } else {
-                janela.setScene(new Scene(loader.load()));
+                janela.setScene(Tema.criarCena(loader.load()));
             }
 
             janela.showAndWait();

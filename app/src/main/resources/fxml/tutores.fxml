@@ -14,13 +14,13 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.pi3sem.desktop.controller.TutoresController"
-      spacing="15" style="-fx-background-color: white;">
+      spacing="15" style="-fx-background-color: -petvax-fundo;">
     <padding>
         <Insets top="30" right="30" bottom="30" left="30" />
     </padding>
 
     <!-- Título da tela -->
-    <Label text="Tutores" textFill="#13352c">
+    <Label text="Tutores" styleClass="texto-titulo">
         <font>
             <Font name="System Bold" size="24" />
         </font>
@@ -32,8 +32,8 @@
                    onAction="#buscar" />
         <Button text="Buscar" onAction="#buscar" prefHeight="35" />
         <Region HBox.hgrow="ALWAYS" />
-        <Button text="Novo" onAction="#novo" prefHeight="35" textFill="WHITE"
-                style="-fx-background-color: #12805d;">
+        <Button text="Novo" onAction="#novo" prefHeight="35" styleClass="texto-invertido"
+                style="-fx-background-color: -petvax-acao;">
             <font>
                 <Font name="System Bold" size="13" />
             </font>
@@ -56,5 +56,5 @@
         <Button text="Excluir" onAction="#excluir" prefHeight="35" />
     </HBox>
 
-    <Label fx:id="lblMensagem" textFill="RED" />
+    <Label fx:id="lblMensagem" styleClass="texto-erro" />
 </VBox>

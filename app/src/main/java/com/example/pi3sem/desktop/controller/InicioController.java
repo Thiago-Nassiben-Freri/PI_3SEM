@@ -17,7 +17,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
 
 // Tela Início: mostra o resumo do dia (GET /dashboard/resumo)
 public class InicioController {
@@ -83,7 +82,8 @@ public class InicioController {
     }
 
     private void carregarDados() {
-        lblMensagem.setTextFill(Color.GRAY);
+        lblMensagem.getStyleClass().remove("texto-erro");
+        lblMensagem.getStyleClass().add("texto-secundario");
         lblMensagem.setText("Carregando...");
 
         new Thread(() -> {
@@ -93,7 +93,8 @@ public class InicioController {
                 Platform.runLater(() -> mostrarDados(resumo));
             } catch (Exception e) {
                 Platform.runLater(() -> {
-                    lblMensagem.setTextFill(Color.RED);
+                    lblMensagem.getStyleClass().remove("texto-secundario");
+                    lblMensagem.getStyleClass().add("texto-erro");
                     lblMensagem.setText(e.getMessage());
                 });
             }

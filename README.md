@@ -94,3 +94,6 @@ O desktop usa a API já hospedada (item 2). É um **segundo processo** (não mis
 cd app
 ./mvnw javafx:run
 ```
+
+Use **Modo escuro** na tela de login ou no menu lateral para alternar o tema.
+O PetVax lembra a escolha neste computador, sem precisar entrar em uma conta.

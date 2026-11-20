@@ -15,12 +15,12 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.pi3sem.desktop.controller.AgendaController"
-      spacing="15" style="-fx-background-color: white;">
+      spacing="15" style="-fx-background-color: -petvax-fundo;">
     <padding>
         <Insets top="30" right="30" bottom="30" left="30" />
     </padding>
 
-    <Label text="Agenda" textFill="#13352c">
+    <Label text="Agenda" styleClass="texto-titulo">
         <font>
             <Font name="System Bold" size="24" />
         </font>
@@ -33,8 +33,8 @@
         <Button text="▶" onAction="#proximoDia" prefHeight="35" />
         <DatePicker fx:id="dpData" prefHeight="35" />
         <Region HBox.hgrow="ALWAYS" />
-        <Button text="Novo agendamento" onAction="#novo" prefHeight="35" textFill="WHITE"
-                style="-fx-background-color: #12805d;">
+        <Button text="Novo agendamento" onAction="#novo" prefHeight="35" styleClass="texto-invertido"
+                style="-fx-background-color: -petvax-acao;">
             <font>
                 <Font name="System Bold" size="13" />
             </font>
@@ -60,5 +60,5 @@
         <Button text="Excluir" onAction="#excluir" prefHeight="35" />
     </HBox>
 
-    <Label fx:id="lblMensagem" textFill="RED" />
+    <Label fx:id="lblMensagem" styleClass="texto-erro" />
 </VBox>

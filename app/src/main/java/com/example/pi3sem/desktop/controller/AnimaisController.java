@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Optional;
 
+import com.example.pi3sem.desktop.Tema;
 import com.example.pi3sem.desktop.model.Especie;
 import com.example.pi3sem.desktop.model.Pet;
 import com.example.pi3sem.desktop.service.ApiService;
@@ -14,7 +15,6 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -126,6 +126,7 @@ public class AnimaisController {
         }
 
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        Tema.configurarDialogo(alerta.getDialogPane());
         alerta.setTitle("Excluir animal");
         alerta.setHeaderText("Deseja excluir o animal " + selecionado.getNome() + "?");
         Optional<ButtonType> resposta = alerta.showAndWait();
@@ -229,7 +230,7 @@ public class AnimaisController {
                 janela.setTitle("Editar animal");
             }
             janela.initModality(Modality.APPLICATION_MODAL); // trava a tela de trás até fechar
-            janela.setScene(new Scene(loader.load(), LARGURA_FORM, ALTURA_FORM));
+            janela.setScene(Tema.criarCena(loader.load(), LARGURA_FORM, ALTURA_FORM));
 
             AnimalFormController form = loader.getController();
             form.setPet(pet);
@@ -248,7 +249,7 @@ public class AnimaisController {
             Stage janela = new Stage();
             janela.setTitle("Detalhes de " + pet.getNome());
             janela.initModality(Modality.APPLICATION_MODAL);
-            janela.setScene(new Scene(loader.load()));
+            janela.setScene(Tema.criarCena(loader.load()));
 
             AnimalDetalhesController detalhes = loader.getController();
             detalhes.setPet(pet);

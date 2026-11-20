@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -15,24 +16,24 @@
       fx:controller="com.example.pi3sem.desktop.controller.LoginController">
 
     <!-- Lado esquerdo: apresentação -->
-    <VBox prefWidth="450" spacing="20" alignment="CENTER_LEFT" style="-fx-background-color: #0f3d32;">
+    <VBox prefWidth="450" spacing="20" alignment="CENTER_LEFT" style="-fx-background-color: -petvax-painel;">
         <padding>
             <Insets top="50" right="50" bottom="50" left="50" />
         </padding>
 
-        <Label text="PetVax" textFill="WHITE">
+        <Label text="PetVax" styleClass="texto-invertido">
             <font>
                 <Font name="System Bold" size="24" />
             </font>
         </Label>
 
-        <Label text="Saúde animal organizada, próxima e humana." textFill="WHITE" wrapText="true">
+        <Label text="Saúde animal organizada, próxima e humana." styleClass="texto-invertido" wrapText="true">
             <font>
                 <Font name="System Bold" size="34" />
             </font>
         </Label>
 
-        <Label text="Prontuários, vacinas, agenda e notificações em um só lugar." textFill="#b9cec7" wrapText="true">
+        <Label text="Prontuários, vacinas, agenda e notificações em um só lugar." styleClass="texto-painel" wrapText="true">
             <font>
                 <Font size="16" />
             </font>
@@ -40,18 +41,18 @@
     </VBox>
 
     <!-- Lado direito: formulário de login -->
-    <VBox HBox.hgrow="ALWAYS" spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: white;">
+    <VBox HBox.hgrow="ALWAYS" spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: -petvax-fundo;">
         <padding>
             <Insets top="50" right="150" bottom="50" left="150" />
         </padding>
 
-        <Label text="Bem-vinda de volta" textFill="#13352c">
+        <Label text="Bem-vinda de volta" styleClass="texto-titulo">
             <font>
                 <Font name="System Bold" size="30" />
             </font>
         </Label>
 
-        <Label text="Acesse sua conta para acompanhar pacientes, vacinas e atendimentos." textFill="GRAY" />
+        <Label text="Acesse sua conta para acompanhar pacientes, vacinas e atendimentos." styleClass="texto-secundario" />
 
         <Label text="E-mail">
             <VBox.margin>
@@ -66,14 +67,15 @@
 
         <CheckBox fx:id="chkMostrarSenha" text="Mostrar senha" onAction="#mostrarSenha" />
 
-        <Label fx:id="lblMensagem" textFill="RED" />
+        <Label fx:id="lblMensagem" styleClass="texto-erro" />
 
         <Button fx:id="btnEntrar" text="Entrar" onAction="#entrar" defaultButton="true"
-                maxWidth="Infinity" prefHeight="40" textFill="WHITE"
-                style="-fx-background-color: #12805d;">
+                maxWidth="Infinity" prefHeight="40" styleClass="texto-invertido"
+                style="-fx-background-color: -petvax-acao;">
             <font>
                 <Font name="System Bold" size="14" />
             </font>
         </Button>
+        <ToggleButton fx:id="btnModoEscuro" text="Modo escuro" />
     </VBox>
 </HBox>

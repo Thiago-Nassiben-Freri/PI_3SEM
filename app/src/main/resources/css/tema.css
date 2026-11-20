@@ -1,0 +1,54 @@
+.root, .dialog-pane {
+    -petvax-fundo: white;
+    -petvax-painel: #0f3d32;
+    -petvax-superficie: #f4f7f5;
+    -petvax-titulo: #13352c;
+    -petvax-secundario: gray;
+    -petvax-texto-painel: #b9cec7;
+    -petvax-acao: #12805d;
+    -petvax-menu-ativo: #164a3d;
+    -petvax-aviso: #d98a1c;
+    -petvax-vencido: #b4363f;
+    -petvax-erro: red;
+    -petvax-sucesso: #12805d;
+    -fx-background-color: -petvax-fundo;
+}
+
+.root:escuro, .dialog-pane:escuro {
+    -petvax-fundo: #141c2b;
+    -petvax-painel: #0b1220;
+    -petvax-superficie: #202c41;
+    -petvax-titulo: #f0f5ff;
+    -petvax-secundario: #b5c3dc;
+    -petvax-texto-painel: #b5c3dc;
+    -petvax-acao: #315ebd;
+    -petvax-menu-ativo: #25477e;
+    -petvax-aviso: #ffd078;
+    -petvax-vencido: #ffa0ab;
+    -petvax-erro: #ffa0ab;
+    -petvax-sucesso: #83e3b6;
+    -fx-base: #2b3850;
+    -fx-background: -petvax-fundo;
+    -fx-control-inner-background: #1b2537;
+    -fx-control-inner-background-alt: #202c41;
+    -fx-text-background-color: #edf3ff;
+    -fx-dark-text-color: #152034;
+    -fx-mid-text-color: #d5e0f6;
+    -fx-light-text-color: #f0f5ff;
+    -fx-accent: #406fd1;
+    -fx-focus-color: #8eb6ff;
+    -fx-faint-focus-color: #8eb6ff33;
+}
+
+.texto-titulo { -fx-text-fill: -petvax-titulo; }
+.texto-secundario { -fx-text-fill: -petvax-secundario; }
+.texto-invertido { -fx-text-fill: white; }
+.texto-painel { -fx-text-fill: -petvax-texto-painel; }
+.texto-aviso { -fx-text-fill: -petvax-aviso; }
+.texto-vencido { -fx-text-fill: -petvax-vencido; }
+.texto-erro { -fx-text-fill: -petvax-erro; }
+.texto-sucesso { -fx-text-fill: -petvax-sucesso; }
+
+.root:escuro .text-input {
+    -fx-prompt-text-fill: -petvax-secundario;
+}

@@ -12,12 +12,12 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.pi3sem.desktop.controller.VacinaFormController"
-      spacing="8" prefWidth="420" style="-fx-background-color: white;">
+      spacing="8" prefWidth="420" style="-fx-background-color: -petvax-fundo;">
     <padding>
         <Insets top="25" right="25" bottom="25" left="25" />
     </padding>
 
-    <Label fx:id="lblTitulo" text="Nova vacina" textFill="#13352c">
+    <Label fx:id="lblTitulo" text="Nova vacina" styleClass="texto-titulo">
         <font>
             <Font name="System Bold" size="20" />
         </font>
@@ -44,13 +44,13 @@
     <Label text="Fabricante" />
     <TextField fx:id="txtFabricante" prefHeight="35" />
 
-    <Label fx:id="lblMensagem" textFill="RED" wrapText="true" />
+    <Label fx:id="lblMensagem" styleClass="texto-erro" wrapText="true" />
 
     <!-- Botões alinhados à direita -->
     <HBox spacing="10" alignment="CENTER_RIGHT">
         <Button text="Cancelar" onAction="#cancelar" prefHeight="35" />
-        <Button fx:id="btnSalvar" text="Salvar" onAction="#salvar" prefHeight="35" textFill="WHITE"
-                style="-fx-background-color: #12805d;">
+        <Button fx:id="btnSalvar" text="Salvar" onAction="#salvar" prefHeight="35" styleClass="texto-invertido"
+                style="-fx-background-color: -petvax-acao;">
             <font>
                 <Font name="System Bold" size="13" />
             </font>
