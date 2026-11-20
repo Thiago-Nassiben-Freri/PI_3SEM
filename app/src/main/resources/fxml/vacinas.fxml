@@ -13,13 +13,13 @@
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.pi3sem.desktop.controller.VacinasController"
-      spacing="15" style="-fx-background-color: white;">
+      spacing="15" style="-fx-background-color: -petvax-fundo;">
     <padding>
         <Insets top="30" right="30" bottom="30" left="30" />
     </padding>
 
     <!-- Título da tela -->
-    <Label text="Vacinas" textFill="#13352c">
+    <Label text="Vacinas" styleClass="texto-titulo">
         <font>
             <Font name="System Bold" size="24" />
         </font>
@@ -29,11 +29,11 @@
     <HBox spacing="10" alignment="CENTER_LEFT">
         <Button text="Próximas" onAction="#proximas" prefHeight="35" />
         <Button text="Vencidas" onAction="#vencidas" prefHeight="35" />
-        <Label fx:id="lblFiltro" textFill="#13352c" />
+        <Label fx:id="lblFiltro" styleClass="texto-titulo" />
         <Region HBox.hgrow="ALWAYS" />
         <Button text="Catálogo de vacinas" onAction="#abrirCatalogo" prefHeight="35" />
-        <Button text="Registrar aplicação" onAction="#registrarAplicacao" prefHeight="35" textFill="WHITE"
-                style="-fx-background-color: #12805d;">
+        <Button text="Registrar aplicação" onAction="#registrarAplicacao" prefHeight="35" styleClass="texto-invertido"
+                style="-fx-background-color: -petvax-acao;">
             <font>
                 <Font name="System Bold" size="13" />
             </font>
@@ -53,5 +53,5 @@
         </columns>
     </TableView>
 
-    <Label fx:id="lblMensagem" textFill="RED" />
+    <Label fx:id="lblMensagem" styleClass="texto-erro" />
 </VBox>

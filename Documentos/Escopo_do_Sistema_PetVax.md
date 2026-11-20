@@ -12,7 +12,7 @@ O PetVax permitirá aos médicos veterinários cadastrar e consultar tutores, se
 
 O principal objetivo do PetVax será auxiliar os médicos veterinários no controle das vacinas dos animais, permitindo identificar aplicações realizadas, próximas doses e datas previstas para novas vacinações. A partir dessas informações, o sistema poderá gerar notificações e lembretes para os veterinários, auxiliando no acompanhamento dos Pets e na organização dos atendimentos presenciais. 
 
-O software será instalado nos computadores utilizados pelos médicos veterinários, funcionando de forma independente da web, mas com possibilidade futura de integração com serviços externos de notificação. 
+O software será instalado nos computadores utilizados pelos médicos veterinários, conectado pela internet à API do sistema, hospedada na nuvem junto com o banco de dados, e com possibilidade futura de integração com serviços externos de notificação. 
 
 ### **2. Relação com outros sistemas** 
 
@@ -40,7 +40,7 @@ O PetVax busca oferecer uma solução simples e prática para centralizar essas 
 
 - Controle de próximas doses: acompanhamento das datas previstas para novas aplicações. 
 
-- Notificações e lembretes: geração de avisos para os médicos veterinários sobre vacinações agendadas e próximas doses. 
+- Notificações e lembretes: geração de avisos para os médicos veterinários sobre vacinações agendadas, próximas doses e doses atrasadas. 
 
 - Relatórios básicos: consulta das vacinações realizadas, agendadas e pendentes. 
 
@@ -56,7 +56,7 @@ Durante a execução do projeto, diversas limitações podem ocorrer no percurso
 
 - Qualidade: limitações de tempo e recursos podem comprometer a experiência do usuário. 
 
-- Funcionamento local: a versão inicial será utilizada presencialmente pelos médicos veterinários e funcionará localmente, podendo limitar integrações com serviços externos. 
+- Dependência de internet: a versão inicial será utilizada presencialmente pelos médicos veterinários e dependerá de conexão com a internet, pois a API e o banco de dados estão hospedados na nuvem. 
 
 ### **6. Riscos** 
 
@@ -110,3 +110,6 @@ As técnicas utilizadas neste estudo foram:
 
 - Pesquisa e análise do mercado Pet, com foco em vacinação e acompanhamento de imunização. 
 
+### **10. Sugestões de evolução** 
+
+- Envio de lembretes diretamente aos tutores pelo WhatsApp. Fica registrado como sugestão e não faz parte do escopo desta entrega, em que as notificações são destinadas aos médicos veterinários. 

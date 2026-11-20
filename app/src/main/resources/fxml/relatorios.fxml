@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.pi3sem.desktop.controller.RelatoriosController"
+      spacing="15" style="-fx-background-color: -petvax-fundo;">
+    <padding>
+        <Insets top="30" right="30" bottom="30" left="30" />
+    </padding>
+
+    <Label text="Relatórios de vacinação" styleClass="texto-titulo">
+        <font>
+            <Font name="System Bold" size="24" />
+        </font>
+    </Label>
+
+    <!-- Filtros: situação e período -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Situação" />
+        <ComboBox fx:id="cbSituacao" prefWidth="140" prefHeight="35" />
+        <Label text="De" />
+        <DatePicker fx:id="dpInicio" prefWidth="140" prefHeight="35" />
+        <Label text="até" />
+        <DatePicker fx:id="dpFim" prefWidth="140" prefHeight="35" />
+        <Button text="Limpar datas" onAction="#limparDatas" prefHeight="35" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Button fx:id="btnGerar" text="Gerar" onAction="#gerar" prefHeight="35" prefWidth="90" styleClass="texto-invertido"
+                style="-fx-background-color: -petvax-acao;">
+            <font>
+                <Font name="System Bold" size="13" />
+            </font>
+        </Button>
+    </HBox>
+
+    <TableView fx:id="tabela" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colSituacao" text="Situação" prefWidth="100" />
+            <TableColumn fx:id="colData" text="Data" prefWidth="100" />
+            <TableColumn fx:id="colAnimal" text="Animal" prefWidth="120" />
+            <TableColumn fx:id="colTutor" text="Tutor" prefWidth="150" />
+            <TableColumn fx:id="colVacina" text="Vacina" prefWidth="140" />
+            <TableColumn fx:id="colVeterinario" text="Veterinário" prefWidth="140" />
+            <TableColumn fx:id="colDose" text="Dose" prefWidth="60" />
+        </columns>
+    </TableView>
+
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="lblMensagem" styleClass="texto-erro" wrapText="true" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label fx:id="lblTotal" styleClass="texto-titulo">
+            <font>
+                <Font name="System Bold" size="13" />
+            </font>
+        </Label>
+    </HBox>
+</VBox>

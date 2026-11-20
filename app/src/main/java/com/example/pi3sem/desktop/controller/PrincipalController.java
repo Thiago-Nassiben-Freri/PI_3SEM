@@ -3,6 +3,7 @@ package com.example.pi3sem.desktop.controller;
 import java.io.IOException;
 import java.net.URL;
 
+import com.example.pi3sem.desktop.Tema;
 import com.example.pi3sem.desktop.model.UsuarioLogado;
 import com.example.pi3sem.desktop.service.ApiService;
 
@@ -11,15 +12,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 // Controla o menu lateral: cada botão carrega uma tela no centro da janela
 public class PrincipalController {
 
     private static final String ESTILO_BOTAO = "-fx-background-color: transparent;";
-    private static final String ESTILO_BOTAO_ATIVO = "-fx-background-color: #164a3d; -fx-background-radius: 8;";
+    private static final String ESTILO_BOTAO_ATIVO = "-fx-background-color: -petvax-menu-ativo; -fx-background-radius: 8;";
 
     @FXML
     private BorderPane painelPrincipal;
@@ -45,9 +46,16 @@ public class PrincipalController {
     @FXML
     private Button btnNotificacoes;
 
+    @FXML
+    private Button btnRelatorios;
+
+    @FXML
+    private ToggleButton btnModoEscuro;
+
     // Roda sozinho quando a tela abre
     @FXML
     public void initialize() {
+        Tema.configurarBotao(btnModoEscuro);
         UsuarioLogado usuario = ApiService.getUsuarioLogado();
         if (usuario != null) {
             lblUsuario.setText(usuario.getNome());
@@ -85,6 +93,11 @@ public class PrincipalController {
         abrirTela("notificacoes", btnNotificacoes);
     }
 
+    @FXML
+    public void abrirRelatorios() {
+        abrirTela("relatorios", btnRelatorios);
+    }
+
     // Volta para a tela de login
     @FXML
     public void sair() {
@@ -118,7 +131,7 @@ public class PrincipalController {
 
     private void mostrarAviso(String texto) {
         Label aviso = new Label(texto);
-        aviso.setTextFill(Color.GRAY);
+        aviso.getStyleClass().add("texto-secundario");
         aviso.setFont(new Font(20));
         painelPrincipal.setCenter(aviso);
     }
@@ -130,6 +143,7 @@ public class PrincipalController {
         btnAgenda.setStyle(ESTILO_BOTAO);
         btnVacinas.setStyle(ESTILO_BOTAO);
         btnNotificacoes.setStyle(ESTILO_BOTAO);
+        btnRelatorios.setStyle(ESTILO_BOTAO);
         botaoAtivo.setStyle(ESTILO_BOTAO_ATIVO);
     }
 }

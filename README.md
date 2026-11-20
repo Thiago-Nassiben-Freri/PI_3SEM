@@ -16,20 +16,20 @@ O sistema em desenvolvimento para a Vet Home, denominado PetVax, visa facilitar 
 O PetVax permitirá aos médicos veterinários cadastrar e consultar tutores, seus respectivos Pets e as vacinas disponíveis, além de realizar o agendamento das aplicações e registrar o histórico de vacinação. O tutor não terá acesso direto ao sistema; suas informações serão registradas e administradas pelos veterinários durante ou a partir dos atendimentos presenciais.
 ***
 
-### Técnologias utilizadas
-**Java + Springboot + JavaFX:** Utilizados no desenvolvimento do sistema, implementação das regras de nogócio, criação da API e interface gráfica.
+### Tecnologias utilizadas
+**Java + Springboot + JavaFX:** Utilizados no desenvolvimento do sistema, implementação das regras de negócio, criação da API e interface gráfica.
 
-**PostgreSQL:** Utilizado para o armazenamento e gerenciamento dos dados dos animais, incluindo histórico de saúde, vacinação, doenças, tratamentos e consultas.
+**PostgreSQL:** Utilizado para o armazenamento e gerenciamento dos dados de tutores, animais, vacinas, histórico de vacinação, agendamentos e notificações.
 ***
 
-### Estrutura Inicial (Provisório)
+### Estrutura do projeto
 ```
 app/
  ├── src/
  │   ├── main/
  │   │   ├── java/
  │   │   │   └── com/
- │   │   │       └── exemple/
+ │   │   │       └── example/
  │   │   │           └── pi3sem/
  │   │   │               ├── backend/
  |   |   |               |   ├── Pi3semApplication.java
@@ -41,22 +41,22 @@ app/
  │   │   │               └── desktop/
  │   │   │                   ├── MainUI.java
  │   │   │                   ├── controller/
- │   │   │                   ├── view/                    
+ │   │   │                   ├── model/
  │   │   │                   └── service/
  │   │   └── resources/
  │   │       ├── application.properties
  │   │       └── fxml/
  |   |
- ├── pom.xml ou build.gradle
+ ├── pom.xml
 ```
 
-**MeuProjetoApplication.java** - Classe principal Spring \
+**Pi3semApplication.java** - Classe principal Spring \
 **controller/** - Controladora REST \
 **service/** - Lógica de negócio \
 **repository/** - Acesso ao DB \
 **model/** - Entidades JPA \
 **MainUI.java** - Inicialização JavaFX \
-**view/** - Telas FXML \ 
+**model/** - Objetos recebidos da API \
 **service/** - Chamadas HTTP ao backend \
 **application.properties** - Configs Spring Boot \
 **fxml/** - Telas JavaFX \
@@ -81,7 +81,7 @@ sudo apt install openjdk-21-jdk
 
 #### 1. Clonar o repositório
 ```bash
-git clone https://github.com/Gabriel-Verdin/PI_3SEM.git
+git clone https://github.com/Thiago-Nassiben-Freri/PI_3SEM.git
 cd PI_3SEM
 ```
 
@@ -89,8 +89,11 @@ cd PI_3SEM
 https://petvax.onrender.com
 
 #### 3. Desktop (JavaFX)
-Ainda pendente. Quando existir, será um **segundo processo** (não misturar com o Spring):
+O desktop usa a API já hospedada (item 2). É um **segundo processo** (não misturar com o Spring):
 ```bash
 cd app
 ./mvnw javafx:run
 ```
+
+Use **Modo escuro** na tela de login ou no menu lateral para alternar o tema.
+O PetVax lembra a escolha neste computador, sem precisar entrar em uma conta.

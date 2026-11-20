@@ -7,6 +7,17 @@ public class Veterinario {
     private Integer crmv;
     private String telefone;
 
+    @Override
+    public String toString() {
+        if (crmv != null) {
+            return "CRMV " + crmv;
+        }
+        if (id != null) {
+            return "Veterinário #" + id;
+        }
+        return "Veterinário";
+    }
+
     public Integer getId() {
         return id;
     }

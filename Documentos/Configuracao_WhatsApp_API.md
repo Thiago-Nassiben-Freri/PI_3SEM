@@ -1,5 +1,7 @@
 # Configuração da WhatsApp Cloud API (envio automático de notificações)
 
+> **Observação:** este documento descreve um protótipo feito durante o desenvolvimento, que envia o lembrete para o telefone do **tutor**. No escopo do PetVax (RN03), as notificações são destinadas ao **médico veterinário**, e o envio ao tutor ficou como sugestão de evolução. O envio ao veterinário pelo WhatsApp não foi implementado nesta entrega; para isso, este mesmo código pode ser reaproveitado usando o telefone do veterinário (`notificacao.getVeterinario().getTelefone()`).
+
 O PetVax envia as notificações de vacina pelo WhatsApp (RF01) de dois jeitos, escolhidos pela variável `WHATSAPP_MODO`:
 
 | Modo | Como funciona | Configuração |

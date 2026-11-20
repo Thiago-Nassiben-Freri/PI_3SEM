@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.paint.Color;
 
 // Tela Notificações: lista os lembretes e envia pelo WhatsApp
 // (envio automático pela WhatsApp Cloud API ou, no modo link, abrindo o WhatsApp Web)
@@ -189,12 +188,16 @@ public class NotificacoesController {
     }
 
     private void mostrarErro(String texto) {
-        lblMensagem.setTextFill(Color.RED);
-        lblMensagem.setText(texto);
+        mostrarMensagem(texto, "texto-erro");
     }
 
     private void mostrarSucesso(String texto) {
-        lblMensagem.setTextFill(Color.web("#12805d"));
+        mostrarMensagem(texto, "texto-sucesso");
+    }
+
+    private void mostrarMensagem(String texto, String estilo) {
+        lblMensagem.getStyleClass().removeAll("texto-erro", "texto-sucesso");
+        lblMensagem.getStyleClass().add(estilo);
         lblMensagem.setText(texto);
     }
 

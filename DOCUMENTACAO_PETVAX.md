@@ -13,7 +13,8 @@ O projeto está dividido em duas partes principais:
    - Está em `app/src/main/java/com/example/pi3sem/backend`.
 
 2. Parte desktop em JavaFX
-   - Será a interface visual do sistema para o veterinário.
+   - É a interface visual do sistema para o veterinário.
+   - Consome a API do backend, publicada em `https://petvax.onrender.com`.
    - Está em `app/src/main/java/com/example/pi3sem/desktop`.
 
 O projeto tem como objetivo dar suporte ao atendimento veterinário, com foco em:
@@ -49,7 +50,7 @@ Ela serve para iniciar o backend do sistema.
 
 ### 2.2 Fluxo de uma requisição
 
-Hoje o código mais importante é o exemplo de espécie:
+Todos os recursos seguem o mesmo fluxo. Exemplo com espécie:
 
 `EspecieController -> EspecieService -> EspecieRepository -> Banco`
 
@@ -165,7 +166,7 @@ public class Especie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idEspecie;
 
-    @Column(name = "nome", nullable = false, length = 80)
+    @Column(name = "nome", nullable = false, length = 30)
     private String nome;
 }
 ```
@@ -175,13 +176,15 @@ Isso quer dizer:
 - cada atributo da classe corresponde a uma coluna
 - o framework cria a estrutura de dados e salva/consulta isso automaticamente
 
-Exemplo de futuras entidades do PetVax:
-- `Tutor`
+Entidades do PetVax:
+- `Usuario` (dados de acesso), `Veterinario` e `Admin`
+- `Tutor` e `Telefone`
+- `Especie` e `Raca`
 - `Pet`
-- `Vacina`
+- `Vacina` e `VacinaEspecie` (espécies em que a vacina pode ser aplicada)
 - `Agendamento`
-- `Usuario`
-- `HistoricoVacina`
+- `AplicacaoVacina` (histórico de vacinação)
+- `Notificacao`
 
 ---
 
@@ -219,34 +222,39 @@ A pasta `config` guarda classes de configuração da aplicação.
 Arquivo `SecurityConfig.java`:
 
 ```java
-@Configuration
-public class SecurityConfig {
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-        return http.build();
-    }
-}
+.authorizeHttpRequests(auth -> auth
+    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+    .requestMatchers("/admins/**").hasRole("ADMIN")
+    .requestMatchers("/usuarios/**").hasRole("ADMIN")
+    .requestMatchers(HttpMethod.POST, "/veterinarios").hasRole("ADMIN")
+    .anyRequest().authenticated());
 ```
 
 Isso significa:
-- no momento, a segurança está relaxada para facilitar o desenvolvimento
-- qualquer rota pode entrar sem autenticação
-- isso é temporário e depois precisa ser ajustado para login do veterinário
+- só a rota de login é liberada; todas as outras exigem login e senha (HTTP Basic)
+- as senhas são gravadas criptografadas (BCrypt)
+- cadastrar veterinários e ativar/desativar usuários é restrito ao perfil de administrador
+- o login aceita o login **ou** o e-mail do usuário; usuário inativo não entra
 
 ---
 
-### 3.6 `resources`
+### 3.6 Outras pastas do backend
+
+- `dto`: objetos de resposta montados pela API (resumo da tela Início, próximas doses, prontuário, relatório, envio de notificação, usuário logado)
+- `exception`: `GlobalExceptionHandler`, que devolve os erros em JSON com mensagem em português
+- `security`: busca do usuário no login (`PetvaxUserDetailsService`) e criação do primeiro administrador (`AdminInicial`)
+- `service/notificacao`: geração e envio das notificações (seção 7)
+
+---
+
+### 3.7 `resources`
 
 Pasta:
 `app/src/main/resources`
 
 Essa pasta guarda arquivos externos da aplicação, como:
 - `application.properties`
-- arquivos HTML, templates e FXML
+- arquivos FXML (telas do desktop)
 - configurações do banco e do servidor
 
 Arquivo relevante:
@@ -263,25 +271,16 @@ Esse arquivo define:
 - qual banco será usado;
 - qual usuário acessa o banco;
 - qual porta do servidor;
+- a geração automática de lembretes e o modo de envio pelo WhatsApp (`petvax.notificacoes.*` e `petvax.whatsapp.*`);
 - outras configurações do Spring.
 
 ---
 
 ## 4. Observação importante sobre o banco
 
-Há uma inconsistência no projeto atual:
+O projeto usa **PostgreSQL**, hospedado no Neon, conforme o RNF03. O rascunho inicial de arquitetura citava MySQL, mas a tecnologia foi padronizada em PostgreSQL na documentação e no código.
 
-- a documentação do projeto fala em MySQL;
-- o código atual está configurado com PostgreSQL (Neon).
-
-Isso não é um problema para começar, mas é algo que precisamos padronizar.
-
-Recomendação:
-- definir uma tecnologia única para o projeto;
-- escolher MySQL ou PostgreSQL;
-- manter a configuração alinhada com a documentação e com o ambiente do grupo.
-
-Para o projeto acadêmico, o mais comum é usar MySQL, conforme a documentação.
+As tabelas são criadas e atualizadas pelo Hibernate (`spring.jpa.hibernate.ddl-auto=update`). A senha do banco fica na variável de ambiente `DB_PASSWORD`, nunca no repositório.
 
 ---
 
@@ -290,31 +289,43 @@ Para o projeto acadêmico, o mais comum é usar MySQL, conforme a documentação
 Pasta:
 `app/src/main/java/com/example/pi3sem/desktop`
 
-A pasta `desktop` representa a parte visual do sistema, que vai usar JavaFX.
+A pasta `desktop` representa a parte visual do sistema, feita em JavaFX com telas FXML.
 
-Hoje o arquivo está só como base:
+- `MainUI.java`: abre a tela de login
+- `controller/`: um controller para cada tela ou janela
+- `model/`: objetos recebidos da API
+- `service/ApiService.java`: faz as chamadas HTTP à API e guarda o usuário logado
 
-```java
-public class MainUI {
-}
-```
-
-Isso significa que a interface ainda não foi montada, mas a estrutura da arquitetura já está pensada:
+A estrutura da arquitetura é:
 
 - `backend` = lógica e API
 - `desktop` = interface do usuário
 
-A ideia é que, quando o sistema ficar mais avançado, a tela em JavaFX vai consumir a API do backend.
+A tela em JavaFX consome a API do backend.
 
 Exemplo de fluxo da interface:
 
 `Tela JavaFX -> chama backend -> API -> serviço -> banco`
 
+Telas implementadas (menu lateral) e suas janelas:
+
+| Tela | Janelas (pop-ups) |
+|---|---|
+| Login | — |
+| Início | — |
+| Tutores | Cadastro de tutor |
+| Animais | Cadastro de animal, Detalhes do animal (histórico e próximas doses) |
+| Vacinas | Registrar aplicação, Catálogo de vacinas, Cadastro de vacina |
+| Agenda | Novo agendamento |
+| Notificações | — |
+
+Para abrir o desktop: `cd app` e `mvnw javafx:run`.
+
 ---
 
-## 6. Estrutura de implementação pensada para o futuro
+## 6. Estrutura de implementação
 
-A arquitetura ideal do PetVax é:
+A arquitetura do PetVax é:
 
 ```text
 desktop (JavaFX)
@@ -329,8 +340,10 @@ Service
 Repository
       |
       v
-Banco de Dados
+Banco de Dados (PostgreSQL - Neon)
 ```
+
+A API roda no Render (Docker) e o desktop roda no computador de cada veterinário.
 
 Isso deixa o sistema organizado porque:
 - interface não lida com banco direto
@@ -339,7 +352,26 @@ Isso deixa o sistema organizado porque:
 
 ---
 
-## 7. Sugestão de próximos passos do projeto
+## 7. Notificações
+
+**Destinatário:** o médico veterinário (RF01 e RN03). O tutor não recebe mensagens do sistema; o envio ao tutor fica como sugestão de evolução.
+
+Como funciona:
+1. Na tela Notificações, o veterinário clica em **Gerar lembretes** (`POST /notificacoes/gerar-pendentes`).
+2. A API cria lembretes para:
+   - doses que vencem nos próximos 30 dias;
+   - doses já vencidas;
+   - agendamentos em aberto nos próximos 2 dias.
+3. Não cria lembrete repetido, nem lembrete de dose se já houver agendamento em aberto para o mesmo animal e vacina.
+4. Cada lembrete fica ligado ao veterinário responsável pela aplicação ou pelo agendamento, e aparece na lista da tela Notificações.
+
+A geração também pode rodar sozinha uma vez por dia (`NotificacaoAgendador`), ligando `petvax.notificacoes.geracao-automatica=true`.
+
+**Pendente:** o envio do lembrete ao veterinário pelo WhatsApp. A estrutura de envio já existe (`NotificacaoSender`, `WhatsAppLinkSender` e `WhatsAppCloudApiSender`), mas hoje usa o telefone do tutor, como protótipo. Para concluir, basta usar o telefone do veterinário (`notificacao.getVeterinario().getTelefone()`) e ajustar o texto das mensagens em `NotificacaoService`. Configuração da Meta em `Documentos/Configuracao_WhatsApp_API.md`.
+
+---
+
+## 8. Fases do desenvolvimento (executadas)
 
 ### Fase 1: Base do backend
 Objetivo: deixar a API funcionando de verdade para o domínio do PetVax.
@@ -349,8 +381,8 @@ Implementar as entidades principais:
 - `Tutor`
 - `Pet`
 - `Vacina`
-- `Agenda`
-- `HistoricoVacina`
+- `Agendamento`
+- `AplicacaoVacina`
 
 Para cada uma, criar:
 - `Model`
@@ -399,65 +431,50 @@ Quando o backend estiver estável, dá para começar a interface desktop.
 4. Tela de cadastro de pet
 5. Tela de cadastro de vacina
 6. Tela de agendamento
-7. Tela de histórico
+7. Tela de histórico (feita como janela Detalhes do animal)
+8. Tela de notificações
 
 Esse fluxo faz sentido porque a parte mais crítica é o cadastro e a gestão dos dados.
 
 ---
 
-## 8. Quando dá para começar a tela?
+## 9. Planejamento das implementações
 
-A resposta curta é:
-
-- dá para começar logo, mas com foco em uma estrutura simples;
-- o ideal é começar a tela depois da base do backend ter sido validada;
-- o primeiro passo para a interface não precisa esperar o sistema completo.
-
-Recomendação prática:
-
-### Melhor ordem:
-1. criar o modelo de dados base;
-2. montar os endpoints básicos;
-3. testar com Postman/Insomnia;
-4. depois criar a tela do sistema.
-
-Isso reduz retrabalho, porque a interface depende da API e das regras que estão sendo criadas no backend.
-
----
-
-## 9. Planejamento sugerido para as próximas implementações
+Situação na entrega final:  feito · ⏳ pendente
 
 ### Sprint 1 - Estrutura base
-- finalizar padronização do banco
-- garantir que o projeto compile corretamente
-- revisar `application.properties`
-- padronizar MySQL x PostgreSQL
-- manter `SecurityConfig` em desenvolvimento
+- finalizar padronização do banco 
+- garantir que o projeto compile corretamente 
+- revisar `application.properties` 
+- padronizar o banco em PostgreSQL 
+- configurar o `SecurityConfig` com login do veterinário 
 
 ### Sprint 2 - Módulo de cadastro
-- `Tutor`
-- `Pet`
-- `Vacina`
-- `Usuario`
+- `Tutor` 
+- `Pet` 
+- `Vacina` 
+- `Usuario`  (pela API, feito pelo administrador)
 
 ### Sprint 3 - Módulo de agenda e histórico
-- `Agenda`
-- `HistoricoVacina`
-- regras de próxima dose
-- consultas por pet
+- `Agendamento` 
+- `AplicacaoVacina` 
+- regras de próxima dose 
+- consultas por pet 
 
 ### Sprint 4 - JavaFX / telas
-- login
-- menu principal
-- cadastro de tutor
-- cadastro de pet
-- cadastro de vacina
-- agenda de vacinação
+- login 
+- menu principal 
+- cadastro de tutor 
+- cadastro de pet 
+- cadastro de vacina 
+- agenda de vacinação 
+- notificações 
 
 ### Sprint 5 - Notificações
-- lembretes por WhatsApp
-- avisos de vacinação pendente
-- relatórios simples
+- lembretes para o veterinário  (tela Notificações)
+- envio dos lembretes ao veterinário por WhatsApp 
+- avisos de vacinação pendente 
+- relatórios simples  (rota `GET /relatorios/vacinacoes` na API)
 
 ---
 
@@ -470,6 +487,7 @@ Se quiser seguir o padrão que já começou, a regra é:
 - `service`: regra do negócio
 - `controller`: rota HTTP
 - `config`: configurações gerais
+- `dto`, `exception`, `security`: respostas, erros e login
 - `desktop`: interface do usuário
 
 Esse padrão é o mais comum em Java + Spring Boot e ajuda muito a manter o projeto organizado.
@@ -478,29 +496,24 @@ Esse padrão é o mais comum em Java + Spring Boot e ajuda muito a manter o proj
 
 ## 11. Conclusão
 
-O projeto está começando a ganhar a estrutura correta de uma aplicação Java com Spring Boot. O exemplo de `Especie` já mostra o padrão que deve ser repetido para o resto do sistema.
+O projeto tem a estrutura de uma aplicação Java com Spring Boot. O padrão do exemplo de `Especie` foi repetido para o resto do sistema.
 
-A estrutura atual já está no caminho certo porque:
+A estrutura atual é adequada porque:
 - separa responsabilidades;
 - organiza as regras em camadas;
 - deixa os futuros cadastros e telas mais fáceis de implementar;
 - facilita manutenção e evolução do sistema.
 
-O próximo grande passo é evoluir do exemplo de uma entidade básica para o domínio real do PetVax: tutor, pet, vacina, agenda e histórico de vacinação.
-
-Quando isso estiver consolidado, aí sim a tela desktop deve entrar com força, já com a base pronta e com o backend funcionando corretamente.
+O domínio do PetVax (tutor, pet, vacina, agenda e histórico de vacinação) e as telas do desktop estão implementados. Fica pendente o envio das notificações ao veterinário pelo WhatsApp (seção 7).
 
 ---
 
-## 12. Ponto de partida recomendado
+## 12. Pendências conhecidas
 
-Se o grupo quiser continuar de forma organizada, o melhor caminho é:
-
-1. criar a entidade `Tutor`
-2. criar `Pet`
-3. criar `Vacina`
-4. criar `Agendamento`
-5. criar `Usuario`
-6. depois montar as telas iniciais
-
-Esse é o caminho mais lógico para evoluir o projeto sem misturar regra de negócio com interface.
+| Item | Situação |
+|---|---|
+| Envio das notificações ao veterinário pelo WhatsApp (RF01) | Pendente (seção 7) |
+| Data da aplicação da vacina | `AplicacaoVacinaService.validar` exige data **no futuro**, o que impede registrar uma dose aplicada hoje ou antes (inclusive pela Agenda). O correto é recusar datas no futuro |
+| Conflito de horário na agenda | A API não recusa dois agendamentos do mesmo veterinário no mesmo horário |
+| Seletor de veterinário | Mostra "CRMV 12345" em vez do nome do veterinário |
+| Cadastro de usuários no desktop | Não existe tela; é feito pela API, pelo administrador |

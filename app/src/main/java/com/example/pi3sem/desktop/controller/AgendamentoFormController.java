@@ -35,6 +35,9 @@ public class AgendamentoFormController {
     private ComboBox<Vacina> cbVacina;
 
     @FXML
+    private ComboBox<Veterinario> cbVeterinario;
+
+    @FXML
     private DatePicker dpData;
 
     @FXML
@@ -67,6 +70,35 @@ public class AgendamentoFormController {
         cbAnimal.setOnAction(e -> carregarVacinas());
 
         carregarAnimais();
+        carregarVeterinarios();
+    }
+
+    private void carregarVeterinarios() {
+        new Thread(() -> {
+            try {
+                String json = ApiService.get("/veterinarios");
+                Veterinario[] veterinarios = ApiService.getMapper().readValue(json, Veterinario[].class);
+                Platform.runLater(() -> {
+                    cbVeterinario.getItems().setAll(veterinarios);
+                    if (veterinarios != null && veterinarios.length > 0) {
+                        Integer idUsuarioLogado = ApiService.getUsuarioLogado() != null
+                                ? ApiService.getUsuarioLogado().getIdUsuario()
+                                : null;
+                        for (Veterinario veterinario : veterinarios) {
+                            if (veterinario.getId() != null && veterinario.getId().equals(idUsuarioLogado)) {
+                                cbVeterinario.setValue(veterinario);
+                                return;
+                            }
+                        }
+                        cbVeterinario.setPromptText("Escolha o veterinário");
+                    } else {
+                        cbVeterinario.setPromptText("Nenhum veterinário cadastrado");
+                    }
+                });
+            } catch (Exception e) {
+                Platform.runLater(() -> lblMensagem.setText(e.getMessage()));
+            }
+        }).start();
     }
 
     // Chamado pela tela Agenda logo depois de abrir o formulário
@@ -137,11 +169,16 @@ public class AgendamentoFormController {
     public void salvar() {
         Pet pet = cbAnimal.getValue();
         Vacina vacina = cbVacina.getValue();
+        Veterinario veterinarioSelecionado = cbVeterinario.getValue();
         LocalDate data = dpData.getValue();
         String hora = cbHora.getValue();
 
         if (pet == null || vacina == null || data == null || hora == null) {
             lblMensagem.setText("Preencha animal, vacina, data e horário.");
+            return;
+        }
+        if (agendamento == null && veterinarioSelecionado == null) {
+            lblMensagem.setText("Selecione o veterinário.");
             return;
         }
 
@@ -151,11 +188,9 @@ public class AgendamentoFormController {
         dados.setDataHora(LocalDateTime.of(data, LocalTime.parse(hora)));
         dados.setObservacao(txtObservacao.getText());
 
-        // Novo agendamento fica com o usuário logado; na edição mantém o veterinário original
+        // Novo agendamento usa o veterinário selecionado; na edição mantém o veterinário original
         if (agendamento == null) {
-            Veterinario veterinario = new Veterinario();
-            veterinario.setId(ApiService.getUsuarioLogado().getIdUsuario());
-            dados.setVeterinario(veterinario);
+            dados.setVeterinario(veterinarioSelecionado);
         } else {
             dados.setVeterinario(agendamento.getVeterinario());
         }

@@ -3,6 +3,7 @@ package com.example.pi3sem.backend.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.pi3sem.backend.exception.RecursoNaoEncontradoException;
 import com.example.pi3sem.backend.model.Especie;
@@ -60,14 +61,25 @@ public class VacinaEspecieService {
     }
 
     // Indica que a vacina pode ser aplicada na espécie
+    @Transactional
     public VacinaEspecie vincular(Integer idVacina, Integer idEspecie) {
-        VacinaEspecie vinculo = new VacinaEspecie();
-        vinculo.setVacina(vacinaService.buscarPorId(idVacina));
-        vinculo.setEspecie(especieService.buscarPorId(idEspecie));
-        if (repository.existsByVacina_IdVacinaAndEspecie_IdEspecie(idVacina, idEspecie)) {
-            throw new IllegalArgumentException("Esta vacina já está vinculada a esta espécie");
+        if (idVacina == null) {
+            throw new IllegalArgumentException("O id da vacina é obrigatório");
         }
-        return repository.save(vinculo);
+        if (idEspecie == null) {
+            throw new IllegalArgumentException("O id da espécie é obrigatório");
+        }
+
+        Vacina vacina = vacinaService.buscarPorId(idVacina);
+        Especie especie = especieService.buscarPorId(idEspecie);
+
+        return repository.findByVacina_IdVacinaAndEspecie_IdEspecie(idVacina, idEspecie)
+                .orElseGet(() -> {
+                    VacinaEspecie vinculo = new VacinaEspecie();
+                    vinculo.setVacina(vacina);
+                    vinculo.setEspecie(especie);
+                    return repository.save(vinculo);
+                });
     }
 
     public void desvincular(Integer idVacina, Integer idEspecie) {

@@ -18,6 +18,9 @@ import tools.jackson.databind.ObjectMapper;
 //   Tutor[] tutores = ApiService.getMapper().readValue(json, Tutor[].class);
 public class ApiService {
 
+    // Desenvolvimento local: use o backend da máquina local.
+    // Para rodar no deploy, reative a linha abaixo e comente a de localhost.
+    // private static final String URL_API = "http://localhost:8080";
     private static final String URL_API = "https://petvax.onrender.com";
 
     private static final HttpClient client = HttpClient.newHttpClient();
