@@ -224,9 +224,9 @@ public class NotificacaoService {
     }
 
     private String mensagemAgendamento(Agendamento agendamento) {
-        return "Olá, " + agendamento.getPet().getTutor().getNome() + "! Lembramos que a vacinação do(a) "
-                + agendamento.getPet().getNome() + " (" + agendamento.getVacina().getNome() + ") está agendada para "
-                + agendamento.getDataHora().format(DATA) + " às " + agendamento.getDataHora().format(HORA) + ".";
+        return "Olá, Dr(a). Vinicius! Vacinação do(a) " + agendamento.getPet().getNome()
+                + " agendada para " + agendamento.getDataHora().format(DATA)
+                + " e horário " + agendamento.getDataHora().format(HORA) + ".";
     }
 
     private boolean possuiAgendamentoEmAberto(Integer idPet, Integer idVacina) {
