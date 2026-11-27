@@ -1,6 +1,5 @@
 package com.example.pi3sem.backend.service.notificacao;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -11,11 +10,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
-import com.example.pi3sem.backend.model.Agendamento;
 import com.example.pi3sem.backend.model.CanalNotificacao;
 import com.example.pi3sem.backend.model.Notificacao;
-import com.example.pi3sem.backend.model.Telefone;
-import com.example.pi3sem.backend.repository.TelefoneRepository;
+import com.example.pi3sem.backend.model.Veterinario;
 
 /**
  * Envio automático pela WhatsApp Cloud API (Meta). Fica ativo com petvax.whatsapp.modo=api;
@@ -24,37 +21,29 @@ import com.example.pi3sem.backend.repository.TelefoneRepository;
  * Com o número de teste gratuito da Meta, a API só entrega para até 5 números cadastrados no
  * painel do app. Mensagens iniciadas pela clínica precisam de um modelo (template) aprovado pela
  * Meta, com uma variável {{1}} que recebe o texto da notificação. Sem template configurado, envia
- * texto livre, que só é entregue se o tutor mandou mensagem para o número nas últimas 24 horas.
+ * texto livre, que só é entregue se o veterinário mandou mensagem para o número nas últimas 24 horas.
  */
 @Component
 @ConditionalOnProperty(name = "petvax.whatsapp.modo", havingValue = "api")
 public class WhatsAppCloudApiSender implements NotificacaoSender {
 
-    private static final DateTimeFormatter DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    private static final DateTimeFormatter HORA = DateTimeFormatter.ofPattern("HH:mm");
-
-    private final TelefoneRepository telefoneRepository;
     private final RestClient restClient = RestClient.create("https://graph.facebook.com");
 
     private final String token;
     private final String phoneNumberId;
     private final String template;
-    private final String templateAgendamento;
     private final String idioma;
     private final String versao;
 
-    public WhatsAppCloudApiSender(TelefoneRepository telefoneRepository,
+    public WhatsAppCloudApiSender(
             @Value("${petvax.whatsapp.token:}") String token,
             @Value("${petvax.whatsapp.phone-number-id:}") String phoneNumberId,
             @Value("${petvax.whatsapp.template:}") String template,
-            @Value("${petvax.whatsapp.template-agendamento:}") String templateAgendamento,
             @Value("${petvax.whatsapp.template-idioma:pt_BR}") String idioma,
             @Value("${petvax.whatsapp.api-versao:v23.0}") String versao) {
-        this.telefoneRepository = telefoneRepository;
         this.token = token;
         this.phoneNumberId = phoneNumberId;
         this.template = template;
-        this.templateAgendamento = templateAgendamento;
         this.idioma = idioma;
         this.versao = versao;
     }
@@ -70,28 +59,18 @@ public class WhatsAppCloudApiSender implements NotificacaoSender {
             throw new IllegalArgumentException(
                     "WhatsApp API não configurada: defina WHATSAPP_TOKEN e WHATSAPP_PHONE_NUMBER_ID");
         }
-        List<Telefone> telefones = telefoneRepository.findByTutor_IdTutor(notificacao.getTutor().getIdTutor());
-        if (telefones.isEmpty()) {
-            throw new IllegalArgumentException("O tutor não possui telefone cadastrado para envio por WhatsApp");
+        // O lembrete vai para o veterinário responsável, não para o tutor
+        Veterinario veterinario = notificacao.getVeterinario();
+        if (veterinario == null || veterinario.getTelefone() == null || veterinario.getTelefone().isBlank()) {
+            throw new IllegalArgumentException("O veterinário não possui telefone cadastrado para envio por WhatsApp");
         }
-        String numero = formatarNumero(telefones.get(0).getNumero());
+        String numero = formatarNumero(veterinario.getTelefone());
         // A API não aceita quebra de linha dentro da variável do modelo
         String mensagem = notificacao.getMensagem().replaceAll("\\s+", " ").trim();
 
-        Agendamento agendamento = notificacao.getAgendamento();
+        // Envia o texto que está na notificação (o veterinário pode editar no desktop antes de enviar)
         Map<String, Object> corpo;
-        if (agendamento != null && !templateAgendamento.isBlank()) {
-            // Modelo de agendamento: {{1}} animal, {{2}} dia, {{3}} horário
-            corpo = mensagemDeModelo(numero, templateAgendamento, List.of(
-                    agendamento.getPet().getNome(),
-                    agendamento.getDataHora().format(DATA),
-                    agendamento.getDataHora().format(HORA)));
-        } else if (agendamento != null) {
-            // Sem modelo aprovado: texto livre no mesmo formato (só chega se o tutor falou com o número nas últimas 24h)
-            corpo = mensagemDeTexto(numero, "Olá, Dr(a). Vinicius! Vacinação do(a) " + agendamento.getPet().getNome()
-                    + " agendada para " + agendamento.getDataHora().format(DATA)
-                    + " e horário " + agendamento.getDataHora().format(HORA) + ".");
-        } else if (!template.isBlank()) {
+        if (!template.isBlank()) {
             corpo = mensagemDeModelo(numero, template, List.of(mensagem));
         } else {
             corpo = mensagemDeTexto(numero, mensagem);
